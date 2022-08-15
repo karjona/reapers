@@ -1,8 +1,19 @@
 {
   "name": "reapers",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0-alpha1",
+  "description": "The Reapers: Tournament of Destiny is a JS game for the js13kGames 2022 competition",
+  "keywords": [
+    "game",
+    "gamedev",
+    "js13kgames"
+  ],
+  "homepage": "https://github.com/karjona/reapers#readme",
+  "bugs": {
+    "url": "https://github.com/karjona/reapers/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "Kilian Arjona (https://about.me/karjona)",
+  "repository": "github:karjona/reapers",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
