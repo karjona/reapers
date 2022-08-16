@@ -1,4 +1,4 @@
-import { init, Sprite, GameLoop, initKeys, keyPressed } from "kontra";
+import { init, Sprite, GameLoop, initKeys, keyPressed, collides } from "kontra";
 
 const { canvas } = init();
 initKeys();
@@ -26,13 +26,22 @@ const player2 = Sprite({
 
 const gameloop = GameLoop({
   update: function () {
-    const isMovingRight = ["arrowright", "d"].some(keyPressed);
-    const isMovingLeft = ["arrowleft", "a"].some(keyPressed);
-    player1.dx = isMovingLeft
+    const player1IsMovingRight = ["arrowright", "d"].some(keyPressed);
+    const player1IsMovingLeft = ["arrowleft", "a"].some(keyPressed);
+    player1.dx = player1IsMovingLeft
       ? -playerWalkSpeed
-      : isMovingRight
+      : player1IsMovingRight
       ? playerWalkSpeed
       : 0;
+
+    if (collides(player1, player2)) {
+      player2.dx = player1IsMovingRight ? playerWalkSpeed : 0;
+      if (player1IsMovingRight) {
+        if (player2.x + player2.width >= canvas.width) {
+          player1.dx = 0;
+        }
+      }
+    }
 
     player1.update();
     player2.update();
@@ -41,6 +50,12 @@ const gameloop = GameLoop({
       player1.x = canvas.width - playerWidth;
     } else if (player1.x < 0) {
       player1.x = 0;
+    }
+
+    if (player2.x + player2.width > canvas.width) {
+      player2.x = canvas.width - playerWidth;
+    } else if (player2.x < 0) {
+      player2.x = 0;
     }
   },
   render: function () {
