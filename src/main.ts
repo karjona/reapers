@@ -1,67 +1,129 @@
-import { init, Sprite, GameLoop, initKeys, keyPressed, collides } from "kontra";
+import {
+  init,
+  Sprite,
+  GameLoop,
+  initKeys,
+  keyPressed,
+  collides,
+  loadImage,
+  GameObject,
+  Text,
+} from "kontra";
 
-const { canvas } = init();
-initKeys();
+window.addEventListener("DOMContentLoaded", async () => {
+  const { canvas } = init();
+  initKeys();
 
-const playerWidth = 48;
-const playerHeight = 48;
-const playerWalkSpeed = 1;
-const groundLevel = 120;
+  const playerWidth = 24;
+  const playerHeight = 40;
+  const playerWalkSpeed = 1;
+  const groundLevel = 120;
+  const player1CanMove = true;
+  const player2CanMove = true;
 
-const player1 = Sprite({
-  x: Math.round(canvas.width / 3) - Math.round(playerWidth / 2),
-  y: groundLevel - playerHeight,
-  color: "red",
-  width: playerWidth,
-  height: playerHeight,
-});
+  let renderHitboxes = false;
 
-const player2 = Sprite({
-  x: Math.round((canvas.width * 2) / 3) - Math.round(playerWidth / 2),
-  y: groundLevel - playerHeight,
-  color: "pink",
-  width: playerWidth,
-  height: playerHeight,
-});
+  let player1: Sprite, player2: Sprite;
+  let player1hitbox: GameObject, player2hitbox: GameObject;
 
-const gameloop = GameLoop({
-  update: function () {
-    const player1IsMovingRight = ["arrowright", "d"].some(keyPressed);
-    const player1IsMovingLeft = ["arrowleft", "a"].some(keyPressed);
-    player1.dx = player1IsMovingLeft
-      ? -playerWalkSpeed
-      : player1IsMovingRight
-      ? playerWalkSpeed
-      : 0;
+  let debugText = Text({
+    text: `Hitboxes: ${renderHitboxes}`,
+    x: 10,
+    y: 10,
+    color: "white",
+    font: "10px monospace",
+  });
 
-    if (collides(player1, player2)) {
-      player2.dx = player1IsMovingRight ? playerWalkSpeed : 0;
-      if (player1IsMovingRight) {
-        if (player2.x + player2.width >= canvas.width) {
-          player1.dx = 0;
+  const player1img = await loadImage("./player1.webp");
+  player1 = Sprite({
+    x: -18,
+    image: player1img,
+  });
+
+  player1hitbox = GameObject({
+    width: playerWidth,
+    height: playerHeight,
+    x: Math.round(canvas.width / 3) - Math.round(playerWidth / 2),
+    y: groundLevel - playerHeight,
+    children: [player1],
+    render: function (this: GameObject) {
+      if (renderHitboxes) {
+        this.context.strokeStyle = "yellow";
+        this.context.lineWidth = 2;
+        this.context.strokeRect(0, 0, this.width, this.height);
+      }
+    },
+  });
+
+  const player2img = await loadImage("./player2.webp");
+  player2 = Sprite({
+    image: player2img,
+  });
+
+  player2hitbox = GameObject({
+    width: playerWidth,
+    height: playerHeight,
+    x: Math.round((canvas.width * 2) / 3) - Math.round(playerWidth / 2),
+    y: groundLevel - playerHeight,
+    children: [player2],
+    render: function (this: GameObject) {
+      if (renderHitboxes) {
+        this.context.strokeStyle = "yellow";
+        this.context.lineWidth = 2;
+        this.context.strokeRect(0, 0, this.width, this.height);
+      }
+    },
+  });
+
+  const gameloop = GameLoop({
+    update: function () {
+      if (keyPressed("h")) {
+        renderHitboxes = !renderHitboxes;
+        debugText.text = `Hitboxes: ${renderHitboxes}`;
+      }
+
+      const player1IsMovingRight = ["arrowright", "d"].some(keyPressed);
+      const player1IsMovingLeft = ["arrowleft", "a"].some(keyPressed);
+      player1hitbox.dx =
+        player1IsMovingLeft && player1CanMove
+          ? -playerWalkSpeed
+          : player1IsMovingRight && player1CanMove
+          ? playerWalkSpeed
+          : 0;
+
+      if (collides(player1hitbox, player2hitbox)) {
+        player2hitbox.dx = player1IsMovingRight ? playerWalkSpeed : 0;
+        if (player1IsMovingRight && player1CanMove) {
+          if (player2hitbox.x + player2hitbox.width >= canvas.width) {
+            player1hitbox.dx = 0;
+          }
         }
       }
-    }
 
-    player1.update();
-    player2.update();
+      debugText.update();
+      player1.update();
+      player1hitbox.update();
+      player2.update();
+      player2hitbox.update();
 
-    if (player1.x + player1.width > canvas.width) {
-      player1.x = canvas.width - playerWidth;
-    } else if (player1.x < 0) {
-      player1.x = 0;
-    }
+      if (player1hitbox.x + player1hitbox.width > canvas.width) {
+        player1hitbox.x = canvas.width - playerWidth;
+      } else if (player1hitbox.x < 0) {
+        player1hitbox.x = 0;
+      }
 
-    if (player2.x + player2.width > canvas.width) {
-      player2.x = canvas.width - playerWidth;
-    } else if (player2.x < 0) {
-      player2.x = 0;
-    }
-  },
-  render: function () {
-    player1.render();
-    player2.render();
-  },
+      if (player2hitbox.x + player2hitbox.width > canvas.width) {
+        player2hitbox.x = canvas.width - playerWidth;
+      } else if (player2hitbox.x < 0) {
+        player2hitbox.x = 0;
+      }
+    },
+    render: function () {
+      player1hitbox.render();
+      player2hitbox.render();
+      debugText.render();
+    },
+  });
+
+  gameloop.start();
 });
-
-gameloop.start();
