@@ -10,10 +10,10 @@ export interface Attack {
 
 export const Jab: Attack = {
   damage: 10,
-  startup: 20,
-  active: 40,
-  recovery: 20,
-  width: 16,
+  startup: 5,
+  active: 4,
+  recovery: 4,
+  width: 18,
   height: 10,
   y: 10,
 };

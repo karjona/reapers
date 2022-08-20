@@ -9,6 +9,7 @@ import {
   loadImage,
   GameObject,
   Text,
+  SpriteSheet,
 } from "kontra";
 
 import { Attack, Jab, Strong } from "./attacks";
@@ -60,9 +61,29 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 
   const player1img = await loadImage("./player1.webp");
+  const player1Spritesheet = SpriteSheet({
+    image: player1img,
+    frameWidth: 60,
+    frameHeight: 37,
+    animations: {
+      idle: {
+        frames: 0,
+      },
+      jabStartup: {
+        frames: 1,
+      },
+      jabActive: {
+        frames: 2,
+      },
+      jabRecovery: {
+        frames: 1,
+      },
+    },
+  });
+
   player1 = Sprite({
     x: -18,
-    image: player1img,
+    animations: player1Spritesheet.animations,
   });
 
   player1Hurtbox = GameObject({});
@@ -124,6 +145,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           player1Attacking = attackLength;
           player1hitboxcolor = "blue";
           player1CanMove = false;
+          player1.playAnimation("jabStartup");
         }
       });
 
@@ -154,6 +176,9 @@ window.addEventListener("DOMContentLoaded", async () => {
               }
             },
           });
+          if (player1Attack === Jab) {
+            player1.playAnimation("jabActive");
+          }
           player1hitbox.addChild(player1Hurtbox);
           player1Active--;
         }
@@ -168,6 +193,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
         if (player1Recovery > 0 && player1Active === 0) {
           player1hitboxcolor = "lightgrey";
+          player1.playAnimation("jabRecovery");
           player1Recovery--;
         }
       }
@@ -176,6 +202,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         player1CanMove = true;
         player1hitboxcolor = "yellow";
         player1AttackAlreadyHit = false;
+        player1.playAnimation("idle");
       }
 
       if (player1Hurtbox.ttl === 0) {
