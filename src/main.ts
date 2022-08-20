@@ -4,6 +4,7 @@ import {
   GameLoop,
   initKeys,
   keyPressed,
+  onKey,
   collides,
   loadImage,
   GameObject,
@@ -32,6 +33,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     y: 10,
     color: "white",
     font: "10px monospace",
+    update: function () {
+      onKey("h", () => {
+        renderHitboxes = !renderHitboxes;
+        this.text = `Hitboxes: ${renderHitboxes}`;
+      });
+    },
   });
 
   const player1img = await loadImage("./player1.webp");
@@ -77,11 +84,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const gameloop = GameLoop({
     update: function () {
-      if (keyPressed("h")) {
-        renderHitboxes = !renderHitboxes;
-        debugText.text = `Hitboxes: ${renderHitboxes}`;
-      }
-
       const player1IsMovingRight = ["arrowright", "d"].some(keyPressed);
       const player1IsMovingLeft = ["arrowleft", "a"].some(keyPressed);
       player1hitbox.dx =
@@ -101,9 +103,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
 
       debugText.update();
-      player1.update();
       player1hitbox.update();
-      player2.update();
       player2hitbox.update();
 
       if (player1hitbox.x + player1hitbox.width > canvas.width) {
