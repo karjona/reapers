@@ -41,6 +41,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     player1Hurtbox: GameObject,
     player2Hurtbox: GameObject;
 
+  let player1AttackAlreadyHit = false;
+  let player2Stun = 0;
+  let player2HitStunned = 0;
+
   let debugText = Text({
     text: `Hitboxes: ${renderHitboxes}`,
     x: 10,
@@ -171,6 +175,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (player1Attacking === 0 && !player1CanMove) {
         player1CanMove = true;
         player1hitboxcolor = "yellow";
+        player1AttackAlreadyHit = false;
       }
 
       if (player1Hurtbox.ttl === 0) {
@@ -199,6 +204,26 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       if (collides(player1Hurtbox, player2hitbox)) {
         player2hitboxcolor = "red";
+        if (!player1AttackAlreadyHit) {
+          player2hitbox.dx = 1;
+          player2HitStunned = 10;
+          player2Stun = player1Attacking - 1;
+        }
+        player1AttackAlreadyHit = true;
+      }
+
+      if (player2HitStunned > 0) {
+        player2HitStunned--;
+        if (player2HitStunned === 0) {
+          player2hitbox.dx = 0;
+        }
+      }
+
+      if (player2Stun > 0) {
+        player2Stun--;
+        if (player2Stun === 0) {
+          player2hitboxcolor = "yellow";
+        }
       }
 
       debugText.update();
