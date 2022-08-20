@@ -11,6 +11,8 @@ import {
   Text,
 } from "kontra";
 
+import { Jab, Strong } from "./attacks";
+
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas } = init();
   initKeys();
@@ -19,13 +21,21 @@ window.addEventListener("DOMContentLoaded", async () => {
   const playerHeight = 40;
   const playerWalkSpeed = 1;
   const groundLevel = 120;
-  const player1CanMove = true;
-  const player2CanMove = true;
+  let player1CanMove = true;
+  let player1Attacking = 0;
 
   let renderHitboxes = true;
 
+  let player1hitboxcolor = "yellow";
+  let player2hitboxcolor = "yellow";
+
+  let player1DoJab = false;
+
   let player1: Sprite, player2: Sprite;
-  let player1hitbox: GameObject, player2hitbox: GameObject;
+  let player1hitbox: GameObject,
+    player2hitbox: GameObject,
+    player1Hurtbox: GameObject,
+    player2Hurtbox: GameObject;
 
   let debugText = Text({
     text: `Hitboxes: ${renderHitboxes}`,
@@ -47,6 +57,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     image: player1img,
   });
 
+  player1Hurtbox = GameObject({});
+
   player1hitbox = GameObject({
     width: playerWidth,
     height: playerHeight,
@@ -55,7 +67,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     children: [player1],
     render: function (this: GameObject) {
       if (renderHitboxes) {
-        this.context.strokeStyle = "yellow";
+        this.context.strokeStyle = player1hitboxcolor;
         this.context.lineWidth = 2;
         this.context.strokeRect(0, 0, this.width, this.height);
       }
@@ -75,7 +87,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     children: [player2],
     render: function (this: GameObject) {
       if (renderHitboxes) {
-        this.context.strokeStyle = "yellow";
+        this.context.strokeStyle = player2hitboxcolor;
         this.context.lineWidth = 2;
         this.context.strokeRect(0, 0, this.width, this.height);
       }
@@ -91,7 +103,45 @@ window.addEventListener("DOMContentLoaded", async () => {
         player2hitbox.x =
           Math.round((canvas.width * 2) / 3) - Math.round(playerWidth / 2);
         renderHitboxes = true;
+        player1CanMove = true;
       });
+
+      onKey("z", () => {
+        player1CanMove = false;
+        if (player1Attacking === 0) {
+          console.log("jab");
+          player1Hurtbox = GameObject({
+            width: Jab.width,
+            height: Jab.height,
+            y: Jab.y,
+            ttl: Jab.startup + Jab.active + Jab.recovery,
+            x: player1hitbox.width,
+            render: function (this: GameObject) {
+              if (renderHitboxes) {
+                this.context.strokeStyle = "red";
+                this.context.lineWidth = 2;
+                this.context.strokeRect(0, 0, this.width, this.height);
+              }
+            },
+          });
+          player1hitbox.addChild(player1Hurtbox);
+          player1Attacking = Jab.startup + Jab.active + Jab.recovery;
+          player1DoJab = false;
+        }
+      });
+
+      if (player1Attacking > 0) {
+        player1Attacking--;
+      }
+
+      if (player1Attacking === 0 && !player1CanMove) {
+        player1CanMove = true;
+      }
+
+      if (player1Hurtbox.ttl === 0) {
+        player1hitbox.removeChild(player1Hurtbox);
+        player1Hurtbox = GameObject({});
+      }
 
       const player1IsMovingRight = ["arrowright", "d"].some(keyPressed);
       const player1IsMovingLeft = ["arrowleft", "a"].some(keyPressed);
@@ -109,6 +159,10 @@ window.addEventListener("DOMContentLoaded", async () => {
             player1hitbox.dx = 0;
           }
         }
+      }
+
+      if (collides(player1Hurtbox, player2hitbox)) {
+        player2hitboxcolor = "red";
       }
 
       debugText.update();
