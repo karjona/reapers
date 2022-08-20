@@ -1,4 +1,4 @@
-interface Attack {
+export interface Attack {
   damage: number;
   startup: number;
   active: number;
@@ -10,9 +10,9 @@ interface Attack {
 
 export const Jab: Attack = {
   damage: 10,
-  startup: 2,
-  active: 4,
-  recovery: 2,
+  startup: 20,
+  active: 40,
+  recovery: 20,
   width: 16,
   height: 10,
   y: 10,

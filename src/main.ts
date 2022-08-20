@@ -11,7 +11,7 @@ import {
   Text,
 } from "kontra";
 
-import { Jab, Strong } from "./attacks";
+import { Attack, Jab, Strong } from "./attacks";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas } = init();
@@ -22,14 +22,18 @@ window.addEventListener("DOMContentLoaded", async () => {
   const playerWalkSpeed = 1;
   const groundLevel = 120;
   let player1CanMove = true;
+
+  let player1Attack: Attack | null = null;
   let player1Attacking = 0;
+  let player1Startup = 0;
+  let player1Active = 0;
+  let player1Recovery = 0;
 
   let renderHitboxes = true;
 
   let player1hitboxcolor = "yellow";
-  let player2hitboxcolor = "yellow";
 
-  let player1DoJab = false;
+  let player2hitboxcolor = "yellow";
 
   let player1: Sprite, player2: Sprite;
   let player1hitbox: GameObject,
@@ -107,14 +111,36 @@ window.addEventListener("DOMContentLoaded", async () => {
       });
 
       onKey("z", () => {
-        player1CanMove = false;
         if (player1Attacking === 0) {
-          console.log("jab");
+          const attackLength = Jab.startup + Jab.active + Jab.recovery;
+          player1Attack = Jab;
+          player1Startup = Jab.startup;
+          player1Active = Jab.active;
+          player1Recovery = Jab.recovery;
+          player1Attacking = attackLength;
+          player1hitboxcolor = "blue";
+          player1CanMove = false;
+        }
+      });
+
+      if (player1Attacking > 0) {
+        player1Attacking--;
+
+        if (player1Startup > 0) {
+          player1Startup--;
+        }
+
+        if (
+          player1Attack &&
+          player1Startup === 0 &&
+          player1Active > 0 &&
+          player1Active === player1Attack.active
+        ) {
           player1Hurtbox = GameObject({
-            width: Jab.width,
-            height: Jab.height,
-            y: Jab.y,
-            ttl: Jab.startup + Jab.active + Jab.recovery,
+            width: player1Attack.width,
+            height: player1Attack.height,
+            y: player1Attack.y,
+            ttl: player1Attack.active,
             x: player1hitbox.width,
             render: function (this: GameObject) {
               if (renderHitboxes) {
@@ -125,22 +151,32 @@ window.addEventListener("DOMContentLoaded", async () => {
             },
           });
           player1hitbox.addChild(player1Hurtbox);
-          player1Attacking = Jab.startup + Jab.active + Jab.recovery;
-          player1DoJab = false;
+          player1Active--;
         }
-      });
 
-      if (player1Attacking > 0) {
-        player1Attacking--;
+        if (
+          player1Attack &&
+          player1Active > 0 &&
+          player1Active < player1Attack.active
+        ) {
+          player1Active--;
+        }
+
+        if (player1Recovery > 0 && player1Active === 0) {
+          player1hitboxcolor = "lightgrey";
+          player1Recovery--;
+        }
       }
 
       if (player1Attacking === 0 && !player1CanMove) {
         player1CanMove = true;
+        player1hitboxcolor = "yellow";
       }
 
       if (player1Hurtbox.ttl === 0) {
         player1hitbox.removeChild(player1Hurtbox);
         player1Hurtbox = GameObject({});
+        player1Attack = null;
       }
 
       const player1IsMovingRight = ["arrowright", "d"].some(keyPressed);
