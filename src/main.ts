@@ -22,7 +22,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   const player1CanMove = true;
   const player2CanMove = true;
 
-  let renderHitboxes = false;
+  let renderHitboxes = true;
 
   let player1: Sprite, player2: Sprite;
   let player1hitbox: GameObject, player2hitbox: GameObject;
@@ -84,6 +84,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const gameloop = GameLoop({
     update: function () {
+      // reset game state
+      onKey("r", () => {
+        player1hitbox.x =
+          Math.round(canvas.width / 3) - Math.round(playerWidth / 2);
+        player2hitbox.x =
+          Math.round((canvas.width * 2) / 3) - Math.round(playerWidth / 2);
+        renderHitboxes = true;
+      });
+
       const player1IsMovingRight = ["arrowright", "d"].some(keyPressed);
       const player1IsMovingLeft = ["arrowleft", "a"].some(keyPressed);
       player1hitbox.dx =
