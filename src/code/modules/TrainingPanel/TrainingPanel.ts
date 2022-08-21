@@ -1,7 +1,5 @@
 import { GameConfig } from "../../data/GameConfig";
-import { init, onKey, Text } from "kontra";
-
-init();
+import { onKey, Text } from "kontra";
 
 export const toggleTrainingPanel = () => {
   onKey("t", () => {

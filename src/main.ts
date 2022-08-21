@@ -1,8 +1,7 @@
+import { canvas } from "./code/data/Instances";
 import {
-  init,
   Sprite,
   GameLoop,
-  initKeys,
   keyPressed,
   onKey,
   collides,
@@ -19,9 +18,6 @@ import {
 } from "./code/modules/TrainingPanel/TrainingPanel";
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const { canvas } = init("game");
-  initKeys();
-
   const playerWidth = 24;
   const playerHeight = 40;
   const playerWalkSpeed = 1;
