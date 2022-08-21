@@ -8,14 +8,18 @@ import {
   collides,
   loadImage,
   GameObject,
-  Text,
   SpriteSheet,
 } from "kontra";
 
 import { Attack, Jab, Strong } from "./attacks";
+import {
+  toggleTrainingPanel,
+  isTrainingPanelEnabled,
+  TrainingPanel,
+} from "./code/modules/TrainingPanel/TrainingPanel";
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const { canvas } = init();
+  const { canvas } = init("game");
   initKeys();
 
   const playerWidth = 24;
@@ -30,8 +34,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   let player1Active = 0;
   let player1Recovery = 0;
 
-  let renderHitboxes = true;
-
   let player1hitboxcolor = "yellow";
 
   let player2hitboxcolor = "yellow";
@@ -45,20 +47,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   let player1AttackAlreadyHit = false;
   let player2Stun = 0;
   let player2HitStunned = 0;
-
-  let debugText = Text({
-    text: `Hitboxes: ${renderHitboxes}`,
-    x: 10,
-    y: 10,
-    color: "white",
-    font: "10px monospace",
-    update: function () {
-      onKey("h", () => {
-        renderHitboxes = !renderHitboxes;
-        this.text = `Hitboxes: ${renderHitboxes}`;
-      });
-    },
-  });
 
   const player1img = await loadImage("./player1.webp");
   const player1Spritesheet = SpriteSheet({
@@ -95,7 +83,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     y: groundLevel - playerHeight,
     children: [player1],
     render: function (this: GameObject) {
-      if (renderHitboxes) {
+      if (isTrainingPanelEnabled()) {
         this.context.strokeStyle = player1hitboxcolor;
         this.context.lineWidth = 2;
         this.context.strokeRect(0, 0, this.width, this.height);
@@ -115,7 +103,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     y: groundLevel - playerHeight,
     children: [player2],
     render: function (this: GameObject) {
-      if (renderHitboxes) {
+      if (isTrainingPanelEnabled()) {
         this.context.strokeStyle = player2hitboxcolor;
         this.context.lineWidth = 2;
         this.context.strokeRect(0, 0, this.width, this.height);
@@ -125,13 +113,11 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const gameloop = GameLoop({
     update: function () {
-      // reset game state
       onKey("r", () => {
         player1hitbox.x =
           Math.round(canvas.width / 3) - Math.round(playerWidth / 2);
         player2hitbox.x =
           Math.round((canvas.width * 2) / 3) - Math.round(playerWidth / 2);
-        renderHitboxes = true;
         player1CanMove = true;
       });
 
@@ -169,7 +155,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             ttl: player1Attack.active,
             x: player1hitbox.width,
             render: function (this: GameObject) {
-              if (renderHitboxes) {
+              if (isTrainingPanelEnabled()) {
                 this.context.strokeStyle = "red";
                 this.context.lineWidth = 2;
                 this.context.strokeRect(0, 0, this.width, this.height);
@@ -253,7 +239,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
-      debugText.update();
+      toggleTrainingPanel();
       player1hitbox.update();
       player2hitbox.update();
 
@@ -272,7 +258,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     render: function () {
       player1hitbox.render();
       player2hitbox.render();
-      debugText.render();
+      if (isTrainingPanelEnabled()) {
+        TrainingPanel.render();
+      }
     },
   });
 
