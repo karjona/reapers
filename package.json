@@ -24,6 +24,7 @@
     "vite": "^3.0.9"
   },
   "dependencies": {
-    "kontra": "^8.0.0"
+    "kontra": "^8.0.0",
+    "tinyfont": "^1.3.2"
   }
 }

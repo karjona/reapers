@@ -1,4 +1,5 @@
 import { GameConfig } from "../../data/GameConfig";
+import { renderText } from "../../data/Instances";
 import { onKey, GameObject, Text } from "kontra";
 
 let lastMove = "";
@@ -28,23 +29,28 @@ export const isTrainingPanelEnabled = () => {
   return GameConfig.showTrainingData ? true : false;
 };
 
-const TrainingPanelText = Text({
-  text: `Attack frames: ${TrainingData.attackFrames}\nFrame advantage: ${TrainingData.frameAdvantage}\nDamage: ${TrainingData.damage}`,
+const TrainingPanelText = GameObject({
   x: 2,
   y: 2,
-  color: "white",
-  font: "7px monospace",
-  update: function (this: Text) {
-    this.text = `Attack frames: ${TrainingData.attackFrames}\nFrame advantage: ${TrainingData.frameAdvantage}\nDamage: ${TrainingData.damage}`;
+  render: function () {
+    renderText(`ATTACK FRAMES: ${TrainingData.attackFrames}`, 0, 0, 5, "white");
+    renderText(
+      `FRAME ADVANTAGE: ${TrainingData.frameAdvantage}`,
+      0,
+      6,
+      5,
+      "white"
+    );
+    renderText(`DAMAGE: ${TrainingData.damage}`, 0, 12, 5, "white");
   },
 });
 
 const TrainingPanelMoveList = Text({
   text: `${moveList.join("\n")}`,
   x: -68,
-  y: 40,
+  y: 36,
   color: "white",
-  font: "7px monospace",
+  font: "8px monospace",
 });
 
 export const addMoveToTrainingPanel = (moves: string[]) => {
@@ -72,7 +78,7 @@ export const addMoveToTrainingPanel = (moves: string[]) => {
   lastMove = currentMove;
   movesToAddToTraining = [];
 
-  if (moveList.length > 12) {
+  if (moveList.length > 10) {
     moveList.pop();
   }
 };

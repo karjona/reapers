@@ -111,7 +111,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 
   const gameloop = GameLoop({
-    update: function (dt) {
+    update: function () {
       onKey("r", () => {
         player1hitbox.x =
           Math.round(canvas.width / 3) - Math.round(playerWidth / 2);
@@ -121,7 +121,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       });
 
       onKey("z", () => {
-        movesToAddToTraining.push("z");
+        movesToAddToTraining.push("🗡");
         if (player1Attacking === 0) {
           const attackLength = Jab.startup + Jab.active + Jab.recovery;
           player1Attack = Jab;
@@ -209,11 +209,11 @@ window.addEventListener("DOMContentLoaded", async () => {
           : 0;
 
       if (player1IsMovingLeft) {
-        movesToAddToTraining.push("<-");
+        movesToAddToTraining.unshift("⬅️");
       }
 
       if (player1IsMovingRight) {
-        movesToAddToTraining.push("->");
+        movesToAddToTraining.unshift("➡️");
       }
 
       if (collides(player1hitbox, player2hitbox)) {
