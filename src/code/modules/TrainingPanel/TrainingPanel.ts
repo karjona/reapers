@@ -4,6 +4,18 @@ import { onKey, GameObject, Text } from "kontra";
 let lastMove = "";
 let lastWrite = 0;
 
+interface TrainingData {
+  attackFrames: number;
+  frameAdvantage: number;
+  damage: number;
+}
+
+export const TrainingData: TrainingData = {
+  attackFrames: 0,
+  frameAdvantage: 0,
+  damage: 0,
+};
+
 const moveList: string[] = [];
 
 export const toggleTrainingPanel = () => {
@@ -17,11 +29,14 @@ export const isTrainingPanelEnabled = () => {
 };
 
 const TrainingPanelText = Text({
-  text: `Attack frame: \nFrame advantage: \nDamage: `,
+  text: `Attack frames: ${TrainingData.attackFrames}\nFrame advantage: ${TrainingData.frameAdvantage}\nDamage: ${TrainingData.damage}`,
   x: 2,
   y: 2,
   color: "white",
   font: "7px monospace",
+  update: function (this: Text) {
+    this.text = `Attack frames: ${TrainingData.attackFrames}\nFrame advantage: ${TrainingData.frameAdvantage}\nDamage: ${TrainingData.damage}`;
+  },
 });
 
 const TrainingPanelMoveList = Text({

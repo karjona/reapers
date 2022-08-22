@@ -17,6 +17,7 @@ import {
   TrainingPanel,
   addMoveToTrainingPanel,
   movesToAddToTraining,
+  TrainingData,
 } from "./code/modules/TrainingPanel/TrainingPanel";
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -128,6 +129,7 @@ window.addEventListener("DOMContentLoaded", async () => {
           player1Active = Jab.active;
           player1Recovery = Jab.recovery;
           player1Attacking = attackLength;
+          TrainingData.attackFrames = attackLength;
           player1hitboxcolor = "blue";
           player1CanMove = false;
           player1.playAnimation("jabStartup");
@@ -136,6 +138,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       if (player1Attacking > 0) {
         player1Attacking--;
+        TrainingData.attackFrames = player1Attacking;
 
         if (player1Startup > 0) {
           player1Startup--;
@@ -224,12 +227,16 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       if (collides(player1Hurtbox, player2hitbox)) {
         player2hitboxcolor = "red";
-        if (!player1AttackAlreadyHit) {
-          player2hitbox.dx = 1;
-          player2HitStunned = 10;
-          player2Stun = player1Attacking - 1;
+        if (player1Attack) {
+          if (!player1AttackAlreadyHit) {
+            player2hitbox.dx = 1;
+            player2HitStunned = 10;
+            player2Stun = player1Attacking - 1;
+            TrainingData.frameAdvantage = -1;
+            TrainingData.damage = player1Attack.damage;
+          }
+          player1AttackAlreadyHit = true;
         }
-        player1AttackAlreadyHit = true;
       }
 
       if (player2HitStunned > 0) {
@@ -249,6 +256,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       toggleTrainingPanel();
       player1hitbox.update();
       player2hitbox.update();
+      TrainingPanel.update();
 
       if (player1hitbox.x + player1hitbox.width > canvas.width) {
         player1hitbox.x = canvas.width - playerWidth;
