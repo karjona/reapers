@@ -4,6 +4,8 @@ import { onKey, GameObject, Text } from "kontra";
 let lastMove = "";
 let lastWrite = 0;
 
+const moveList: string[] = [];
+
 export const toggleTrainingPanel = () => {
   onKey("t", () => {
     GameConfig.showTrainingData = !GameConfig.showTrainingData;
@@ -23,7 +25,7 @@ const TrainingPanelText = Text({
 });
 
 const TrainingPanelMoveList = Text({
-  text: "",
+  text: `${moveList.join("\n")}`,
   x: -68,
   y: 40,
   color: "white",
@@ -31,27 +33,33 @@ const TrainingPanelMoveList = Text({
 });
 
 export const addMoveToTrainingPanel = (moves: string[]) => {
-  const moveList: string = moves.join(" ");
-  const oldMoves = TrainingPanelMoveList.text;
+  function updateMoves(moves: string) {
+    moveList.unshift(moves);
+    TrainingPanelMoveList.text = `${moveList.join("\n")}`;
+    lastWrite = 8;
+  }
 
+  const currentMove: string = moves.join(" ");
   if (lastWrite > 0) {
     lastWrite--;
   }
 
   if (moves.length > 0) {
-    if (moveList !== lastMove) {
-      TrainingPanelMoveList.text = `${moveList}\n${oldMoves}`;
-      lastWrite = 8;
+    if (currentMove !== lastMove) {
+      updateMoves(currentMove);
     } else {
       if (lastWrite === 0) {
-        TrainingPanelMoveList.text = `${moveList}\n${oldMoves}`;
-        lastWrite = 8;
+        updateMoves(currentMove);
       }
     }
   }
 
-  lastMove = moveList;
+  lastMove = currentMove;
   movesToAddToTraining = [];
+
+  if (moveList.length > 12) {
+    moveList.pop();
+  }
 };
 
 export let movesToAddToTraining: string[] = [];
