@@ -1,5 +1,5 @@
 import { GameConfig } from "../../data/GameConfig";
-import { onKey, Text } from "kontra";
+import { onKey, GameObject, Text } from "kontra";
 
 export const toggleTrainingPanel = () => {
   onKey("t", () => {
@@ -15,10 +15,18 @@ export const isTrainingPanelEnabled = () => {
   }
 };
 
-export const TrainingPanel = Text({
-  text: `Training Panel`,
-  x: 10,
-  y: 10,
+const TrainingPanelText = Text({
+  text: `Attack frame: \nFrame advantage: \nDamage: `,
+  x: 2,
+  y: 2,
   color: "white",
   font: "7px monospace",
+});
+
+export const TrainingPanel = GameObject({
+  x: 70,
+  y: 2,
+  width: 88,
+  height: 26,
+  children: [TrainingPanelText],
 });
