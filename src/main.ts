@@ -15,6 +15,8 @@ import {
   toggleTrainingPanel,
   isTrainingPanelEnabled,
   TrainingPanel,
+  addMoveToTrainingPanel,
+  movesToAddToTraining,
 } from "./code/modules/TrainingPanel/TrainingPanel";
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -108,7 +110,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 
   const gameloop = GameLoop({
-    update: function () {
+    update: function (dt) {
       onKey("r", () => {
         player1hitbox.x =
           Math.round(canvas.width / 3) - Math.round(playerWidth / 2);
@@ -118,6 +120,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       });
 
       onKey("z", () => {
+        movesToAddToTraining.push("z");
         if (player1Attacking === 0) {
           const attackLength = Jab.startup + Jab.active + Jab.recovery;
           player1Attack = Jab;
@@ -202,6 +205,14 @@ window.addEventListener("DOMContentLoaded", async () => {
           ? playerWalkSpeed
           : 0;
 
+      if (player1IsMovingLeft) {
+        movesToAddToTraining.push("<-");
+      }
+
+      if (player1IsMovingRight) {
+        movesToAddToTraining.push("->");
+      }
+
       if (collides(player1hitbox, player2hitbox)) {
         player2hitbox.dx = player1IsMovingRight ? playerWalkSpeed : 0;
         if (player1IsMovingRight && player1CanMove) {
@@ -250,6 +261,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       } else if (player2hitbox.x < 0) {
         player2hitbox.x = 0;
       }
+
+      addMoveToTrainingPanel(movesToAddToTraining);
     },
     render: function () {
       player1hitbox.render();
