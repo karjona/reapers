@@ -1,14 +1,25 @@
-import { Sprite, GameObject, SpriteSheet, getContext } from "kontra";
+import {
+  Sprite,
+  GameObject,
+  SpriteSheet,
+  keyPressed,
+  getContext,
+} from "kontra";
 import {
   fighterHealth,
   fighterHeight,
   fighterWidth,
+  fighterWalkSpeed,
   fighterYStartPosition,
   leftFighterXStartPosition,
   rightFighterXStartPosition,
 } from "../data/Constants";
 import { Attack } from "./Attack";
-import { isTrainingPanelEnabled } from "../modules/TrainingPanel/TrainingPanel";
+import {
+  movesToAddToTraining,
+  isTrainingPanelEnabled,
+  addMoveToTrainingPanel,
+} from "../modules/TrainingPanel/TrainingPanel";
 
 export enum Position {
   Left,
@@ -28,6 +39,8 @@ export default class Fighter {
 
   health = fighterHealth;
 
+  movingLeft = false;
+  movingRight = false;
   canMove = true;
 
   position: Position;
@@ -89,9 +102,43 @@ export default class Fighter {
     });
   }
 
+  move(position: Position) {
+    if (this.canMove) {
+      if (position === Position.Left) {
+        this.#hitbox.dx = -fighterWalkSpeed;
+      } else {
+        this.#hitbox.dx = fighterWalkSpeed;
+      }
+    }
+  }
+
+  stop() {
+    this.#hitbox.dx = 0;
+  }
+
+  attack() {
+    console.log("attack");
+  }
+
   update() {
+    if (this.position === Position.Left) {
+      this.movingRight = ["arrowright"].some(keyPressed);
+      this.movingLeft = ["arrowleft"].some(keyPressed);
+
+      if (this.movingLeft && this.canMove) {
+        this.move(Position.Left);
+        movesToAddToTraining.unshift("⬅️");
+      } else if (this.movingRight && this.canMove) {
+        this.move(Position.Right);
+        movesToAddToTraining.unshift("➡️");
+      } else {
+        this.stop();
+      }
+    }
+
     this.#hitbox.update();
     this.#hurtbox.update();
+    addMoveToTrainingPanel(movesToAddToTraining);
   }
 
   render() {
