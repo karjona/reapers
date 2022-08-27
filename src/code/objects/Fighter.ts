@@ -134,7 +134,7 @@ export default class Fighter {
 
   private handleAttack() {
     if (this.position === Position.Left) {
-      onKey("z", () => {
+      onKey("k", () => {
         movesToAddToTraining.push("🗡");
         TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
         this.attack(Jab);
@@ -214,6 +214,17 @@ export default class Fighter {
         this.hitbox.dx = -fighterWalkSpeed;
       } else {
         this.hitbox.dx = fighterWalkSpeed;
+      }
+
+      if (this.hitbox.x <= 0 && position === Position.Left) {
+        this.hitbox.dx = 0;
+      }
+
+      if (
+        this.hitbox.x >= canvas.width - fighterWidth &&
+        position === Position.Right
+      ) {
+        this.hitbox.dx = 0;
       }
     }
   }
