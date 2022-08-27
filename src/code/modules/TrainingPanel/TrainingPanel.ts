@@ -49,7 +49,6 @@ const TrainingPanelMoveList = Text({
   text: `${moveList.join("\n")}`,
   x: -68,
   y: 36,
-  color: "white",
   font: "8px monospace",
 });
 
