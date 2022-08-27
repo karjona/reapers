@@ -3,7 +3,7 @@ interface GameConfig {
 }
 
 const DefaultGameConfig: GameConfig = {
-  showTrainingData: true,
+  showTrainingData: false,
 };
 
 export const GameConfig: GameConfig = DefaultGameConfig;

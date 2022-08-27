@@ -22,6 +22,7 @@ export default function CheckFighterCollisions() {
     if (player1.doingAttack) {
       if (!player1.attackAlreadyHit) {
         player2.recoil = 10;
+        player2.health -= player1.doingAttack.damage;
         player2.canMove = false;
         player2.stun = player1.attackingFrames + player1.doingAttack.advantage;
         TrainingData.frameAdvantage = player1.doingAttack.advantage;
