@@ -1,12 +1,4 @@
-export interface Attack {
-  damage: number;
-  startup: number;
-  active: number;
-  recovery: number;
-  width: number;
-  height: number;
-  y: number;
-}
+import { Attack } from "../types/Attack";
 
 export const Jab: Attack = {
   damage: 10,
@@ -16,6 +8,7 @@ export const Jab: Attack = {
   width: 18,
   height: 10,
   y: 10,
+  advantage: -1,
 };
 
 export const Strong: Attack = {
@@ -26,4 +19,5 @@ export const Strong: Attack = {
   width: 20,
   height: 20,
   y: 2,
+  advantage: 2,
 };
