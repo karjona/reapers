@@ -130,12 +130,32 @@ export default class Fighter {
         movesToAddToTraining.unshift("➡️");
       }
     }
+
+    if (this.position === Position.Right) {
+      this.movingRight = ["g"].some(keyPressed);
+      this.movingLeft = ["d"].some(keyPressed);
+
+      if (this.movingLeft && this.canMove) {
+        this.move(Position.Left);
+      } else if (this.movingRight && this.canMove) {
+        this.move(Position.Right);
+      } else {
+        this.stop();
+      }
+    }
   }
 
   private handleAttack() {
     if (this.position === Position.Left) {
       onKey("k", () => {
         movesToAddToTraining.push("🗡");
+        TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
+        this.attack(Jab);
+      });
+    }
+
+    if (this.position === Position.Right) {
+      onKey("y", () => {
         TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
         this.attack(Jab);
       });
