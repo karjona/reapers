@@ -21,7 +21,10 @@
   },
   "devDependencies": {
     "typescript": "^4.8.2",
-    "vite": "^3.0.9"
+    "vite": "^3.0.9",
+    "vite-plugin-compress": "^2.1.1",
+    "vite-plugin-minify": "^1.5.2",
+    "vite-plugin-singlefile": "^0.11.1"
   },
   "dependencies": {
     "kontra": "^8.0.0",
