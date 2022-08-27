@@ -131,11 +131,76 @@ export default class Fighter {
   private handleAttack() {
     if (this.position === Position.Left) {
       onKey("z", () => {
-        console.log(movesToAddToTraining);
         movesToAddToTraining.push("🗡");
         TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
         this.attack(Jab);
       });
+    }
+
+    if (this.attackingFrames > 0) {
+      this.attackingFrames--;
+      if (this.position === Position.Left) {
+        TrainingData.attackFrames = this.attackingFrames;
+      }
+
+      if (this.startupFrames > 0) {
+        this.startupFrames--;
+      }
+
+      if (
+        this.doingAttack &&
+        this.startupFrames === 0 &&
+        this.activeFrames > 0 &&
+        this.activeFrames === this.doingAttack.active
+      ) {
+        this.#hurtbox = GameObject({
+          width: this.doingAttack.width,
+          height: this.doingAttack.height,
+          y: this.doingAttack.y,
+          ttl: this.doingAttack.active,
+          x: this.#hitbox.width,
+          render: function (this: GameObject) {
+            if (isTrainingPanelEnabled()) {
+              const context = getContext();
+              context.strokeStyle = "red";
+              context.lineWidth = 2;
+              context.strokeRect(0, 0, this.width, this.height);
+            }
+          },
+        });
+        if (this.doingAttack === Jab) {
+          this.#sprite.playAnimation("jabActive");
+        }
+        this.#hitbox.addChild(this.#hurtbox);
+        this.activeFrames--;
+      }
+
+      if (
+        this.doingAttack &&
+        this.activeFrames > 0 &&
+        this.activeFrames < this.doingAttack.active
+      ) {
+        this.activeFrames--;
+      }
+
+      if (this.recoveryFrames > 0 && this.activeFrames === 0) {
+        this.hitboxColor = "lightgrey";
+        this.#sprite.playAnimation("jabRecovery");
+        this.recoveryFrames--;
+      }
+    }
+
+    if (this.attackingFrames === 0 && !this.canMove) {
+      this.canMove = true;
+      this.hitboxColor = "yellow";
+      this.attackAlreadyHit = false;
+      this.#sprite.playAnimation("idle");
+    }
+
+    if (this.#hurtbox.ttl === 0) {
+      this.#hitbox.removeChild(this.#hurtbox);
+      this.#hurtbox = GameObject({});
+      this.doingAttack = null;
     }
   }
 
