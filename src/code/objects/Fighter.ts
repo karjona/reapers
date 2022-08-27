@@ -37,7 +37,7 @@ export default class Fighter {
   recoveryFrames = 0;
 
   stun = 0;
-  hitStunned = 0;
+  recoil = 0;
 
   health = fighterHealth;
 
@@ -228,6 +228,31 @@ export default class Fighter {
     }
   }
 
+  private handleStun() {
+    if (this.recoil > 0) {
+      this.recoil--;
+      if (this.position == Position.Left) {
+        this.hitbox.x -= 1;
+        if (this.hitbox.x < 0) {
+          this.hitbox.x = 0;
+        }
+      } else {
+        this.hitbox.x += 1;
+        if (this.hitbox.x + this.hitbox.width > canvas.width) {
+          this.hitbox.x = canvas.width - this.hitbox.width;
+        }
+      }
+    }
+
+    if (this.stun > 0) {
+      this.stun--;
+      if (this.stun === 0) {
+        this.canMove = true;
+        this.hitboxColor = "yellow";
+      }
+    }
+  }
+
   private move(position: Position) {
     if (this.canMove) {
       if (position === Position.Left) {
@@ -274,6 +299,7 @@ export default class Fighter {
 
     this.handleMovement();
     this.handleAttack();
+    this.handleStun();
     this.hitbox.update();
     this.hurtbox.update();
   }

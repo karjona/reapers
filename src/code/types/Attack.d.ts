@@ -6,4 +6,5 @@ export interface Attack {
   width: number;
   height: number;
   y: number;
+  advantage: number;
 }
