@@ -50,8 +50,8 @@ export default class Fighter {
   hitboxColor = "yellow";
 
   #sprite: Sprite;
-  #hurtbox: GameObject;
-  #hitbox: GameObject;
+  hurtbox: GameObject;
+  hitbox: GameObject;
 
   constructor(position: Position) {
     this.position = position;
@@ -60,9 +60,9 @@ export default class Fighter {
       x: this.position === Position.Left ? -18 : 0,
     });
 
-    this.#hurtbox = GameObject({});
+    this.hurtbox = GameObject({});
 
-    this.#hitbox = GameObject({
+    this.hitbox = GameObject({
       width: fighterWidth,
       height: fighterHeight,
       x:
@@ -157,12 +157,12 @@ export default class Fighter {
         this.activeFrames > 0 &&
         this.activeFrames === this.doingAttack.active
       ) {
-        this.#hurtbox = GameObject({
+        this.hurtbox = GameObject({
           width: this.doingAttack.width,
           height: this.doingAttack.height,
           y: this.doingAttack.y,
           ttl: this.doingAttack.active,
-          x: this.#hitbox.width,
+          x: this.hitbox.width,
           render: function (this: GameObject) {
             if (isTrainingPanelEnabled()) {
               const context = getContext();
@@ -175,7 +175,7 @@ export default class Fighter {
         if (this.doingAttack === Jab) {
           this.#sprite.playAnimation("jabActive");
         }
-        this.#hitbox.addChild(this.#hurtbox);
+        this.hitbox.addChild(this.hurtbox);
         this.activeFrames--;
       }
 
@@ -201,9 +201,9 @@ export default class Fighter {
       this.#sprite.playAnimation("idle");
     }
 
-    if (this.#hurtbox.ttl === 0) {
-      this.#hitbox.removeChild(this.#hurtbox);
-      this.#hurtbox = GameObject({});
+    if (this.hurtbox.ttl === 0) {
+      this.hitbox.removeChild(this.hurtbox);
+      this.hurtbox = GameObject({});
       this.doingAttack = null;
     }
   }
@@ -211,15 +211,15 @@ export default class Fighter {
   private move(position: Position) {
     if (this.canMove) {
       if (position === Position.Left) {
-        this.#hitbox.dx = -fighterWalkSpeed;
+        this.hitbox.dx = -fighterWalkSpeed;
       } else {
-        this.#hitbox.dx = fighterWalkSpeed;
+        this.hitbox.dx = fighterWalkSpeed;
       }
     }
   }
 
   private stop() {
-    this.#hitbox.dx = 0;
+    this.hitbox.dx = 0;
   }
 
   private attack(attack: Attack) {
@@ -243,11 +243,11 @@ export default class Fighter {
 
     this.handleMovement();
     this.handleAttack();
-    this.#hitbox.update();
-    this.#hurtbox.update();
+    this.hitbox.update();
+    this.hurtbox.update();
   }
 
   render() {
-    this.#hitbox.render();
+    this.hitbox.render();
   }
 }
