@@ -1,18 +1,18 @@
-import { loadImage, GameLoop } from "kontra";
+import { GameLoop } from "kontra";
 
 import {
   toggleTrainingPanel,
   isTrainingPanelEnabled,
   TrainingPanel,
 } from "./code/modules/TrainingPanel/TrainingPanel";
-import Fighter, { Position } from "./code/types/Fighter";
+
+import { player1, player2 } from "./code/data/Instances";
+import { LoadAssets } from "./code/functions/LoadAssets";
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const player1img = await loadImage("./src/images/players/player1.webp");
-  const player1 = new Fighter(Position.Left, player1img);
-
-  const player2img = await loadImage("./src/images/players/player2.webp");
-  const player2 = new Fighter(Position.Right, player2img);
+  const { player1Image, player2Image } = await LoadAssets();
+  player1.addSpriteSheet(player1Image);
+  player2.addSpriteSheet(player2Image);
 
   const gameloop = GameLoop({
     update: function () {

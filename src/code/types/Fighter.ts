@@ -1,3 +1,4 @@
+import { canvas } from "../data/Instances";
 import {
   Sprite,
   GameObject,
@@ -12,8 +13,6 @@ import {
   fighterWidth,
   fighterWalkSpeed,
   fighterYStartPosition,
-  leftFighterXStartPosition,
-  rightFighterXStartPosition,
 } from "../data/Constants";
 import { Attack } from "./Attack";
 import { Jab } from "../data/Attacks";
@@ -50,16 +49,45 @@ export default class Fighter {
 
   hitboxColor = "yellow";
 
-  #spriteSheet: SpriteSheet;
   #sprite: Sprite;
   #hurtbox: GameObject;
   #hitbox: GameObject;
 
-  constructor(position: Position, spriteSheet: HTMLImageElement) {
+  constructor(position: Position) {
     this.position = position;
 
-    this.#spriteSheet = SpriteSheet({
-      image: spriteSheet,
+    this.#sprite = Sprite({
+      x: this.position === Position.Left ? -18 : 0,
+    });
+
+    this.#hurtbox = GameObject({});
+
+    this.#hitbox = GameObject({
+      width: fighterWidth,
+      height: fighterHeight,
+      x:
+        position === Position.Left
+          ? Math.round(canvas.width / 3) - Math.round(fighterWidth / 2)
+          : Math.round((canvas.width * 2) / 3) - Math.round(fighterWidth / 2),
+      y: fighterYStartPosition,
+      children: [this.#sprite],
+      properties: {
+        type: "fighterHitbox",
+      },
+      render: () => {
+        if (isTrainingPanelEnabled()) {
+          const context = getContext();
+          context.strokeStyle = this.hitboxColor;
+          context.lineWidth = 2;
+          context.strokeRect(0, 0, fighterWidth, fighterHeight);
+        }
+      },
+    });
+  }
+
+  addSpriteSheet(image: HTMLImageElement) {
+    const spriteSheet = SpriteSheet({
+      image: image,
       frameWidth: 60,
       frameHeight: 37,
       animations: {
@@ -78,31 +106,7 @@ export default class Fighter {
       },
     });
 
-    this.#sprite = Sprite({
-      x: this.position === Position.Left ? -18 : 0,
-      animations: this.#spriteSheet.animations,
-    });
-
-    this.#hurtbox = GameObject({});
-
-    this.#hitbox = GameObject({
-      width: fighterWidth,
-      height: fighterHeight,
-      x:
-        position === Position.Left
-          ? leftFighterXStartPosition
-          : rightFighterXStartPosition,
-      y: fighterYStartPosition,
-      children: [this.#sprite],
-      render: () => {
-        if (isTrainingPanelEnabled()) {
-          const context = getContext();
-          context.strokeStyle = this.hitboxColor;
-          context.lineWidth = 2;
-          context.strokeRect(0, 0, fighterWidth, fighterHeight);
-        }
-      },
-    });
+    this.#sprite.animations = spriteSheet.animations;
   }
 
   private handleMovement() {
