@@ -8,10 +8,10 @@ import {
 import Fighter, { Position } from "./code/types/Fighter";
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const player1img = await loadImage("./player1.webp");
+  const player1img = await loadImage("./src/images/players/player1.webp");
   const player1 = new Fighter(Position.Left, player1img);
 
-  const player2img = await loadImage("./player2.webp");
+  const player2img = await loadImage("./src/images/players/player2.webp");
   const player2 = new Fighter(Position.Right, player2img);
 
   const gameloop = GameLoop({
