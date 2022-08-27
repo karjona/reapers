@@ -1,6 +1,6 @@
 import { init, initKeys, getContext } from "kontra";
 import { initFont, font } from "tinyfont";
-import Fighter, { Position } from "../types/Fighter";
+import Fighter, { Position } from "../objects/Fighter";
 
 export const { canvas } = init("game");
 initKeys();

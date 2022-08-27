@@ -14,7 +14,7 @@ import {
   fighterWalkSpeed,
   fighterYStartPosition,
 } from "../data/Constants";
-import { Attack } from "./Attack";
+import { Attack } from "../types/Attack";
 import { Jab } from "../data/Attacks";
 import {
   movesToAddToTraining,
