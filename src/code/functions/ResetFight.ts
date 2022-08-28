@@ -6,6 +6,7 @@ import {
 } from "../data/Constants";
 import { Position } from "../objects/Fighter";
 import { GameObject } from "kontra";
+import { TrainingData } from "../modules/TrainingPanel/TrainingPanel";
 
 export default function ResetFight() {
   const fighters = [player1, player2];
@@ -36,5 +37,10 @@ export default function ResetFight() {
     // reset all player hutboxes to default
     fighter.hitbox.removeChild(fighter.hurtbox);
     fighter.hurtbox = GameObject({});
+
+    // reset training data
+    TrainingData.attackFrames = 0;
+    TrainingData.frameAdvantage = 0;
+    TrainingData.damage = 0;
   });
 }
