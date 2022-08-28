@@ -6,3 +6,5 @@ export const fighterHealth = 100;
 
 export const groundLevel = 120;
 export const fighterYStartPosition = groundLevel - fighterHeight;
+
+export const roundsToWin = 2;

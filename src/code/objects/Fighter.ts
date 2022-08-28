@@ -40,6 +40,7 @@ export default class Fighter {
   recoil = 0;
 
   health = fighterHealth;
+  roundsWon = 0;
 
   movingLeft = false;
   movingRight = false;
@@ -49,14 +50,14 @@ export default class Fighter {
 
   hitboxColor = "yellow";
 
-  #sprite: Sprite;
+  sprite: Sprite;
   hurtbox: GameObject;
   hitbox: GameObject;
 
   constructor(position: Position) {
     this.position = position;
 
-    this.#sprite = Sprite({
+    this.sprite = Sprite({
       x: this.position === Position.Left ? -18 : 0,
     });
 
@@ -70,7 +71,7 @@ export default class Fighter {
           ? Math.round(canvas.width / 3) - Math.round(fighterWidth / 2)
           : Math.round((canvas.width * 2) / 3) - Math.round(fighterWidth / 2),
       y: fighterYStartPosition,
-      children: [this.#sprite],
+      children: [this.sprite],
       properties: {
         type: "fighterHitbox",
       },
@@ -106,7 +107,7 @@ export default class Fighter {
       },
     });
 
-    this.#sprite.animations = spriteSheet.animations;
+    this.sprite.animations = spriteSheet.animations;
   }
 
   private handleMovement() {
@@ -193,7 +194,7 @@ export default class Fighter {
           },
         });
         if (this.doingAttack === Jab) {
-          this.#sprite.playAnimation("jabActive");
+          this.sprite.playAnimation("jabActive");
         }
         this.hitbox.addChild(this.hurtbox);
         this.activeFrames--;
@@ -209,7 +210,7 @@ export default class Fighter {
 
       if (this.recoveryFrames > 0 && this.activeFrames === 0) {
         this.hitboxColor = "lightgrey";
-        this.#sprite.playAnimation("jabRecovery");
+        this.sprite.playAnimation("jabRecovery");
         this.recoveryFrames--;
       }
     }
@@ -218,7 +219,7 @@ export default class Fighter {
       this.canMove = true;
       this.hitboxColor = "yellow";
       this.attackAlreadyHit = false;
-      this.#sprite.playAnimation("idle");
+      this.sprite.playAnimation("idle");
     }
 
     if (this.hurtbox.ttl === 0) {
@@ -288,7 +289,7 @@ export default class Fighter {
       this.attackingFrames = attackLength;
       this.hitboxColor = "blue";
       this.canMove = false;
-      this.#sprite.playAnimation("jabStartup");
+      this.sprite.playAnimation("jabStartup");
     }
   }
 

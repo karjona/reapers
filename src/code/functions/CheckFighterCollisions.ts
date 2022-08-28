@@ -2,6 +2,7 @@ import { collides } from "kontra";
 import { canvas, player1, player2 } from "../data/Instances";
 import { fighterWalkSpeed } from "../data/Constants";
 import { TrainingData } from "../modules/TrainingPanel/TrainingPanel";
+import ResetFight from "./ResetFight";
 
 export default function CheckFighterCollisions() {
   // Player collisions
@@ -21,14 +22,21 @@ export default function CheckFighterCollisions() {
     player2.hitboxColor = "red";
     if (player1.doingAttack) {
       if (!player1.attackAlreadyHit) {
-        player2.recoil = 10;
-        player2.health -= player1.doingAttack.damage;
-        player2.canMove = false;
-        player2.stun = player1.attackingFrames + player1.doingAttack.advantage;
-        TrainingData.frameAdvantage = player1.doingAttack.advantage;
-        TrainingData.damage = player1.doingAttack.damage;
+        if (player1.doingAttack.damage >= player2.health) {
+          player2.health = 0;
+          player1.roundsWon += 1;
+          ResetFight();
+        } else {
+          player2.recoil = 10;
+          player2.health -= player1.doingAttack.damage;
+          player2.canMove = false;
+          player2.stun =
+            player1.attackingFrames + player1.doingAttack.advantage;
+          TrainingData.frameAdvantage = player1.doingAttack.advantage;
+          TrainingData.damage = player1.doingAttack.damage;
+          player1.attackAlreadyHit = true;
+        }
       }
-      player1.attackAlreadyHit = true;
     }
   }
 }
