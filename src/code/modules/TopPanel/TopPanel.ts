@@ -1,5 +1,5 @@
 import { GameObject, getContext } from "kontra";
-import { canvas } from "../../data/Instances";
+import { canvas, renderText } from "../../data/Instances";
 import HealthBar from "../../objects/HealthBar";
 import { player1, player2 } from "../../data/Instances";
 import RoundCounter from "../../objects/RoundCounter";
@@ -9,6 +9,30 @@ const player2HealthBar = new HealthBar(player2);
 
 const player1RoundCounter = new RoundCounter(player1);
 const player2RoundCounter = new RoundCounter(player2);
+
+const nomiquielLabel = GameObject({
+  x: 0,
+  y: 0,
+  render: function () {
+    renderText("NOMIQUIEL", 7, 12, 5, "white");
+  },
+});
+
+const omiquielLabel = GameObject({
+  x: 0,
+  y: 0,
+  render: function () {
+    renderText("OMIQUIEL", 119, 12, 5, "white");
+  },
+});
+
+const koLabel = GameObject({
+  x: 0,
+  y: 0,
+  render: function () {
+    renderText("KO", 71, 15, 10, "white");
+  },
+});
 
 export const TopPanel = GameObject({
   x: 0,
@@ -20,6 +44,9 @@ export const TopPanel = GameObject({
     player2HealthBar.healthBar,
     player1RoundCounter.roundCounter,
     player2RoundCounter.roundCounter,
+    nomiquielLabel,
+    omiquielLabel,
+    koLabel,
   ],
   render: function () {
     const context = getContext();
