@@ -1,5 +1,9 @@
 import { player1, player2 } from "../data/Instances";
-import { fighterHealth } from "../data/Constants";
+import {
+  fighterHealth,
+  leftFighterXStartPosition,
+  rightFighterXStartPosition,
+} from "../data/Constants";
 import { Position } from "../objects/Fighter";
 import { GameObject } from "kontra";
 
@@ -23,8 +27,8 @@ export default function ResetFight() {
 
     // move all players back to start position
     fighter.position === Position.Left
-      ? (fighter.hitbox.x = 10)
-      : (fighter.hitbox.x = 50);
+      ? (fighter.hitbox.x = leftFighterXStartPosition)
+      : (fighter.hitbox.x = rightFighterXStartPosition);
 
     // reset all player animations to idle
     fighter.sprite.playAnimation("idle");

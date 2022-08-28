@@ -4,6 +4,8 @@ export const fighterWalkSpeed = 1;
 
 export const fighterHealth = 100;
 
+export const leftFighterXStartPosition = 30;
+export const rightFighterXStartPosition = 106;
 export const groundLevel = 120;
 export const fighterYStartPosition = groundLevel - fighterHeight;
 

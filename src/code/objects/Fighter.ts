@@ -12,6 +12,8 @@ import {
   fighterHeight,
   fighterWidth,
   fighterWalkSpeed,
+  leftFighterXStartPosition,
+  rightFighterXStartPosition,
   fighterYStartPosition,
 } from "../data/Constants";
 import { Attack } from "../types/Attack";
@@ -68,8 +70,8 @@ export default class Fighter {
       height: fighterHeight,
       x:
         position === Position.Left
-          ? Math.round(canvas.width / 3) - Math.round(fighterWidth / 2)
-          : Math.round((canvas.width * 2) / 3) - Math.round(fighterWidth / 2),
+          ? leftFighterXStartPosition
+          : rightFighterXStartPosition,
       y: fighterYStartPosition,
       children: [this.sprite],
       properties: {
