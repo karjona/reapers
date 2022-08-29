@@ -1,6 +1,6 @@
 import { GameConfig } from "../../data/GameConfig";
 import { renderText } from "../../data/Instances";
-import { onKey, GameObject, Text } from "kontra";
+import { onKey, GameObject } from "kontra";
 
 let lastMove = "";
 let lastWrite = 0;
