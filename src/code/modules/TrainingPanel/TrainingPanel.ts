@@ -45,12 +45,16 @@ const TrainingPanelText = GameObject({
   },
 });
 
+/*
 const TrainingPanelMoveList = Text({
   text: `${moveList.join("\n")}`,
   x: -68,
   y: 36,
   font: "8px monospace",
 });
+*/
+
+export const TrainingPanelMoveList = GameObject({});
 
 export const addMoveToTrainingPanel = (moves: string[]) => {
   function updateMoves(moves: string) {

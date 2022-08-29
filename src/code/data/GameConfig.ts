@@ -1,3 +1,5 @@
+import { Scene } from "../types/Scene";
+
 interface GameConfig {
   showTrainingData: boolean;
   fightersCanAct: boolean;
@@ -6,6 +8,7 @@ interface GameConfig {
   koLabelFlashTimer: number;
   winScreenOpacity: number;
   matchWon: boolean;
+  currentScene: Scene;
 }
 
 const DefaultGameConfig: GameConfig = {
@@ -16,6 +19,7 @@ const DefaultGameConfig: GameConfig = {
   koLabelFlashTimer: 0,
   winScreenOpacity: 0,
   matchWon: false,
+  currentScene: Scene.Fight,
 };
 
 export const GameConfig: GameConfig = DefaultGameConfig;
