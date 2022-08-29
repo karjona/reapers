@@ -10,6 +10,8 @@ const player2HealthBar = new HealthBar(player2);
 const player1RoundCounter = new RoundCounter(player1);
 const player2RoundCounter = new RoundCounter(player2);
 
+let koLabelColor = "white";
+
 const nomiquielLabel = GameObject({
   x: 0,
   y: 0,
@@ -30,9 +32,13 @@ const koLabel = GameObject({
   x: 0,
   y: 0,
   render: function () {
-    renderText("KO", 71, 15, 10, "white");
+    renderText("KO", 71, 15, 10, koLabelColor);
   },
 });
+
+export function toggleKOColor() {
+  koLabelColor === "white" ? (koLabelColor = "red") : (koLabelColor = "white");
+}
 
 export const TopPanel = GameObject({
   x: 0,
