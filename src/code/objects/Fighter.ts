@@ -12,6 +12,8 @@ import {
   fighterHeight,
   fighterWidth,
   fighterWalkSpeed,
+  leftFighterXStartPosition,
+  rightFighterXStartPosition,
   fighterYStartPosition,
 } from "../data/Constants";
 import { Attack } from "../types/Attack";
@@ -22,6 +24,7 @@ import {
   addMoveToTrainingPanel,
   TrainingData,
 } from "../modules/TrainingPanel/TrainingPanel";
+import { GameConfig } from "../data/GameConfig";
 
 export enum Position {
   Left,
@@ -40,6 +43,7 @@ export default class Fighter {
   recoil = 0;
 
   health = fighterHealth;
+  roundsWon = 0;
 
   movingLeft = false;
   movingRight = false;
@@ -49,15 +53,15 @@ export default class Fighter {
 
   hitboxColor = "yellow";
 
-  #sprite: Sprite;
+  sprite: Sprite;
   hurtbox: GameObject;
   hitbox: GameObject;
 
   constructor(position: Position) {
     this.position = position;
 
-    this.#sprite = Sprite({
-      x: this.position === Position.Left ? -18 : 0,
+    this.sprite = Sprite({
+      x: this.position === Position.Left ? -18 : -24,
     });
 
     this.hurtbox = GameObject({});
@@ -67,10 +71,10 @@ export default class Fighter {
       height: fighterHeight,
       x:
         position === Position.Left
-          ? Math.round(canvas.width / 3) - Math.round(fighterWidth / 2)
-          : Math.round((canvas.width * 2) / 3) - Math.round(fighterWidth / 2),
+          ? leftFighterXStartPosition
+          : rightFighterXStartPosition,
       y: fighterYStartPosition,
-      children: [this.#sprite],
+      children: [this.sprite],
       properties: {
         type: "fighterHitbox",
       },
@@ -106,7 +110,7 @@ export default class Fighter {
       },
     });
 
-    this.#sprite.animations = spriteSheet.animations;
+    this.sprite.animations = spriteSheet.animations;
   }
 
   private handleMovement() {
@@ -119,6 +123,10 @@ export default class Fighter {
       } else if (this.movingRight && this.canMove) {
         this.move(Position.Right);
       } else {
+        this.stop();
+      }
+
+      if (this.canMove === false) {
         this.stop();
       }
 
@@ -148,16 +156,20 @@ export default class Fighter {
   private handleAttack() {
     if (this.position === Position.Left) {
       onKey("k", () => {
-        movesToAddToTraining.push("🗡");
-        TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
-        this.attack(Jab);
+        if (GameConfig.fightersCanAct) {
+          movesToAddToTraining.push("🗡");
+          TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
+          this.attack(Jab);
+        }
       });
     }
 
     if (this.position === Position.Right) {
       onKey("y", () => {
-        TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
-        this.attack(Jab);
+        if (GameConfig.fightersCanAct) {
+          TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
+          this.attack(Jab);
+        }
       });
     }
 
@@ -193,7 +205,7 @@ export default class Fighter {
           },
         });
         if (this.doingAttack === Jab) {
-          this.#sprite.playAnimation("jabActive");
+          this.sprite.playAnimation("jabActive");
         }
         this.hitbox.addChild(this.hurtbox);
         this.activeFrames--;
@@ -209,16 +221,20 @@ export default class Fighter {
 
       if (this.recoveryFrames > 0 && this.activeFrames === 0) {
         this.hitboxColor = "lightgrey";
-        this.#sprite.playAnimation("jabRecovery");
+        this.sprite.playAnimation("jabRecovery");
         this.recoveryFrames--;
       }
     }
 
-    if (this.attackingFrames === 0 && !this.canMove) {
+    if (
+      this.attackingFrames === 0 &&
+      !this.canMove &&
+      GameConfig.fightersCanAct == true
+    ) {
       this.canMove = true;
       this.hitboxColor = "yellow";
       this.attackAlreadyHit = false;
-      this.#sprite.playAnimation("idle");
+      this.sprite.playAnimation("idle");
     }
 
     if (this.hurtbox.ttl === 0) {
@@ -288,7 +304,7 @@ export default class Fighter {
       this.attackingFrames = attackLength;
       this.hitboxColor = "blue";
       this.canMove = false;
-      this.#sprite.playAnimation("jabStartup");
+      this.sprite.playAnimation("jabStartup");
     }
   }
 

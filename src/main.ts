@@ -1,33 +1,35 @@
 import { GameLoop } from "kontra";
+import { GameConfig } from "./code/data/GameConfig";
+import PrepareFightScene from "./code/functions/PrepareFightScene";
 
 import {
-  toggleTrainingPanel,
-  isTrainingPanelEnabled,
-  TrainingPanel,
-} from "./code/modules/TrainingPanel/TrainingPanel";
-
-import { player1, player2 } from "./code/data/Instances";
+  player1,
+  player2,
+  fightScene,
+  rematchScene,
+} from "./code/data/Instances";
 import { LoadAssets } from "./code/functions/LoadAssets";
-import CheckFighterCollisions from "./code/functions/CheckFighterCollisions";
+import { Scene } from "./code/types/Scene";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { player1Image, player2Image } = await LoadAssets();
   player1.addSpriteSheet(player1Image);
   player2.addSpriteSheet(player2Image);
+  PrepareFightScene();
 
   const gameloop = GameLoop({
-    update: function () {
-      player1.update();
-      player2.update();
-      CheckFighterCollisions();
-      toggleTrainingPanel();
-      TrainingPanel.update();
+    update: function (dt) {
+      if (GameConfig.currentScene === Scene.Fight) {
+        fightScene.update(dt);
+      } else {
+        rematchScene.update(dt);
+      }
     },
     render: function () {
-      player1.render();
-      player2.render();
-      if (isTrainingPanelEnabled()) {
-        TrainingPanel.render();
+      if (GameConfig.currentScene === Scene.Fight) {
+        fightScene.render();
+      } else {
+        rematchScene.render();
       }
     },
   });
