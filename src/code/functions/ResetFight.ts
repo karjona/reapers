@@ -1,4 +1,4 @@
-import { player1, player2 } from "../data/Instances";
+import { fightScene, player1, player2, rematchScene } from "../data/Instances";
 import {
   fighterHealth,
   leftFighterXStartPosition,
@@ -6,10 +6,10 @@ import {
 } from "../data/Constants";
 import { Position } from "../objects/Fighter";
 import { GameObject } from "kontra";
-import { TrainingData } from "../modules/TrainingPanel/TrainingPanel";
 import { GameConfig } from "../data/GameConfig";
+import { Scene } from "../types/Scene";
 
-export default function ResetFight() {
+export default function ResetFight(rematch = false) {
   const fighters = [player1, player2];
   fighters.forEach((fighter) => {
     // reset all player properties to default
@@ -39,12 +39,23 @@ export default function ResetFight() {
     fighter.hitbox.removeChild(fighter.hurtbox);
     fighter.hurtbox = GameObject({});
 
-    // reset training data
-    TrainingData.attackFrames = 0;
-    TrainingData.frameAdvantage = 0;
-    TrainingData.damage = 0;
-
-    // show get ready
-    GameConfig.readyTimer = 0;
+    if (rematch) {
+      // reset round wins
+      fighter.roundsWon = 0;
+    }
   });
+
+  // show get ready
+  GameConfig.readyTimer = 0;
+
+  if (rematch) {
+    // switch scenes
+    rematchScene.destroy();
+    GameConfig.currentScene = Scene.Fight;
+    GameConfig.matchWon = false;
+    GameConfig.whoWon = null;
+    GameConfig.winScreenOpacity = 0;
+    GameConfig.koLabelFlashTimer = 0;
+    fightScene.show();
+  }
 }

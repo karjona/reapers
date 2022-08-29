@@ -1,6 +1,12 @@
 import { GameObject, getContext, onKey, Text } from "kontra";
 import { GameConfig } from "../../data/GameConfig";
 import { canvas, renderText } from "../../data/Instances";
+import ResetFight from "../../functions/ResetFight";
+
+const flashCursorMaxTimer = 1;
+let flashCursorTimer = 0;
+let currentCursorFlash = 0;
+let cursorCanMove = true;
 
 const rematchText = GameObject({
   x: 24,
@@ -47,9 +53,37 @@ function moveCursor() {
   cursor.x === 12 ? (cursor.x = 72) : (cursor.x = 12);
 }
 
-function handleCursor() {
-  if (cursor.x === 12) {
-    console.log("go again");
+function handleCursor(dt: number) {
+  if (cursor.x === 12 && flashCursorTimer === 0) {
+    cursorCanMove = false;
+    flashCursorTimer += dt;
+  }
+}
+
+function flashCursor(dt: number) {
+  if (flashCursorTimer > 0 && flashCursorTimer < flashCursorMaxTimer) {
+    if (currentCursorFlash === 0) {
+      currentCursorFlash++;
+      cursor.text === "🔥" ? (cursor.text = "") : (cursor.text = "🔥");
+    }
+
+    if (currentCursorFlash > 0 && currentCursorFlash < 8) {
+      currentCursorFlash++;
+    }
+
+    if (currentCursorFlash === 8) {
+      currentCursorFlash = 0;
+    }
+
+    flashCursorTimer += dt;
+  }
+
+  if (flashCursorTimer >= flashCursorMaxTimer) {
+    ResetFight(true);
+    flashCursorTimer = 0;
+    currentCursorFlash = 0;
+    cursorCanMove = true;
+    cursor.text = "🔥";
   }
 }
 
@@ -64,17 +98,31 @@ export const RematchScreen = GameObject({
     context.fillStyle = "white";
     context.fillRect(0, 0, canvas.width, canvas.height);
   },
-  update: function () {
+  update: (dt) => {
     onKey("arrowright", () => {
-      moveCursor();
+      if (cursorCanMove) {
+        moveCursor();
+      }
     });
 
     onKey("arrowleft", () => {
-      moveCursor();
+      if (cursorCanMove) {
+        moveCursor();
+      }
     });
 
     onKey("k", () => {
-      handleCursor();
+      if (cursorCanMove) {
+        if (dt !== undefined) {
+          handleCursor(dt);
+        }
+      }
     });
+
+    if (flashCursorTimer > 0) {
+      if (dt !== undefined) {
+        flashCursor(dt);
+      }
+    }
   },
 });
