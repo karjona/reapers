@@ -8,6 +8,7 @@ interface GameConfig {
   koLabelFlashTimer: number;
   winScreenOpacity: number;
   matchWon: boolean;
+  whoWon: string | null;
   currentScene: Scene;
 }
 
@@ -19,6 +20,7 @@ const DefaultGameConfig: GameConfig = {
   koLabelFlashTimer: 0,
   winScreenOpacity: 0,
   matchWon: false,
+  whoWon: null,
   currentScene: Scene.Fight,
 };
 
