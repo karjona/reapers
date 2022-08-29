@@ -11,7 +11,7 @@ import { LoadAssets } from "./code/functions/LoadAssets";
 import CheckFighterCollisions from "./code/functions/CheckFighterCollisions";
 import { TopPanel } from "./code/modules/TopPanel/TopPanel";
 import { GameConfig } from "./code/data/GameConfig";
-import GetReady from "./code/functions/GetReady";
+import CheckGameState from "./code/functions/CheckGameState";
 import { AnnouncerText } from "./code/modules/AnnouncerText/AnnouncerText";
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -28,7 +28,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       toggleTrainingPanel();
       TrainingPanel.update();
       if (GameConfig.fightersCanAct === false) {
-        GetReady(dt);
+        CheckGameState(dt);
       }
       AnnouncerText.update();
     },

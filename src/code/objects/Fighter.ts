@@ -126,6 +126,10 @@ export default class Fighter {
         this.stop();
       }
 
+      if (this.canMove === false) {
+        this.stop();
+      }
+
       if (this.movingLeft) {
         movesToAddToTraining.unshift("⬅️");
       }
@@ -222,7 +226,11 @@ export default class Fighter {
       }
     }
 
-    if (this.attackingFrames === 0 && !this.canMove) {
+    if (
+      this.attackingFrames === 0 &&
+      !this.canMove &&
+      GameConfig.fightersCanAct == true
+    ) {
       this.canMove = true;
       this.hitboxColor = "yellow";
       this.attackAlreadyHit = false;
