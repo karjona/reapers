@@ -6,7 +6,7 @@ let label = "";
 
 export const AnnouncerText = GameObject({
   x: 0,
-  y: 75,
+  y: 70,
   render: function () {
     renderText(label, 0, 0, 5, "white");
   },
