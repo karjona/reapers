@@ -61,7 +61,7 @@ export default class Fighter {
     this.position = position;
 
     this.sprite = Sprite({
-      x: this.position === Position.Left ? -18 : 0,
+      x: this.position === Position.Left ? -18 : -24,
     });
 
     this.hurtbox = GameObject({});
