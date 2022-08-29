@@ -3,6 +3,7 @@ import { canvas, player1, player2 } from "../data/Instances";
 import { fighterWalkSpeed } from "../data/Constants";
 import { TrainingData } from "../modules/TrainingPanel/TrainingPanel";
 import ResetFight from "./ResetFight";
+import { GameConfig } from "../data/GameConfig";
 
 export default function CheckFighterCollisions() {
   // Player collisions
@@ -23,6 +24,7 @@ export default function CheckFighterCollisions() {
     if (player1.doingAttack) {
       if (!player1.attackAlreadyHit) {
         if (player1.doingAttack.damage >= player2.health) {
+          GameConfig.fightersCanAct = false;
           player2.health = 0;
           player1.roundsWon += 1;
           ResetFight();

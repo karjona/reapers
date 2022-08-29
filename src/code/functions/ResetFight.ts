@@ -7,6 +7,7 @@ import {
 import { Position } from "../objects/Fighter";
 import { GameObject } from "kontra";
 import { TrainingData } from "../modules/TrainingPanel/TrainingPanel";
+import { GameConfig } from "../data/GameConfig";
 
 export default function ResetFight() {
   const fighters = [player1, player2];
@@ -42,5 +43,8 @@ export default function ResetFight() {
     TrainingData.attackFrames = 0;
     TrainingData.frameAdvantage = 0;
     TrainingData.damage = 0;
+
+    // show get ready
+    GameConfig.readyTimer = 0;
   });
 }

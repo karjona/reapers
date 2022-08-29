@@ -24,6 +24,7 @@ import {
   addMoveToTrainingPanel,
   TrainingData,
 } from "../modules/TrainingPanel/TrainingPanel";
+import { GameConfig } from "../data/GameConfig";
 
 export enum Position {
   Left,
@@ -151,16 +152,20 @@ export default class Fighter {
   private handleAttack() {
     if (this.position === Position.Left) {
       onKey("k", () => {
-        movesToAddToTraining.push("🗡");
-        TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
-        this.attack(Jab);
+        if (GameConfig.fightersCanAct) {
+          movesToAddToTraining.push("🗡");
+          TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
+          this.attack(Jab);
+        }
       });
     }
 
     if (this.position === Position.Right) {
       onKey("y", () => {
-        TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
-        this.attack(Jab);
+        if (GameConfig.fightersCanAct) {
+          TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
+          this.attack(Jab);
+        }
       });
     }
 

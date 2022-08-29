@@ -10,6 +10,9 @@ import { player1, player2 } from "./code/data/Instances";
 import { LoadAssets } from "./code/functions/LoadAssets";
 import CheckFighterCollisions from "./code/functions/CheckFighterCollisions";
 import { TopPanel } from "./code/modules/TopPanel/TopPanel";
+import { GameConfig } from "./code/data/GameConfig";
+import GetReady from "./code/functions/GetReady";
+import { AnnouncerText } from "./code/modules/AnnouncerText/AnnouncerText";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { player1Image, player2Image } = await LoadAssets();
@@ -17,13 +20,17 @@ window.addEventListener("DOMContentLoaded", async () => {
   player2.addSpriteSheet(player2Image);
 
   const gameloop = GameLoop({
-    update: function () {
+    update: function (dt) {
       player1.update();
       player2.update();
       CheckFighterCollisions();
       TopPanel.update();
       toggleTrainingPanel();
       TrainingPanel.update();
+      if (GameConfig.fightersCanAct === false) {
+        GetReady(dt);
+      }
+      AnnouncerText.update();
     },
     render: function () {
       TopPanel.render();
@@ -32,6 +39,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (isTrainingPanelEnabled()) {
         TrainingPanel.render();
       }
+      AnnouncerText.render();
     },
   });
 

@@ -10,3 +10,5 @@ export const groundLevel = 120;
 export const fighterYStartPosition = groundLevel - fighterHeight;
 
 export const roundsToWin = 2;
+export const getReadyTextTimer = 1;
+export const fightTextTimer = 1.5;
