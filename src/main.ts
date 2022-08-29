@@ -10,6 +10,7 @@ import { player1, player2 } from "./code/data/Instances";
 import { LoadAssets } from "./code/functions/LoadAssets";
 import CheckFighterCollisions from "./code/functions/CheckFighterCollisions";
 import { TopPanel } from "./code/modules/TopPanel/TopPanel";
+import { BottomPanel } from "./code/modules/BottomPanel/BottomPanel";
 import { GameConfig } from "./code/data/GameConfig";
 import CheckGameState from "./code/functions/CheckGameState";
 import { AnnouncerText } from "./code/modules/AnnouncerText/AnnouncerText";
@@ -25,6 +26,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       player2.update();
       CheckFighterCollisions();
       TopPanel.update();
+      BottomPanel.update();
       toggleTrainingPanel();
       TrainingPanel.update();
       if (GameConfig.fightersCanAct === false) {
@@ -34,6 +36,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     },
     render: function () {
       TopPanel.render();
+      BottomPanel.render();
       player1.render();
       player2.render();
       if (isTrainingPanelEnabled()) {
