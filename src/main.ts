@@ -2,7 +2,12 @@ import { GameLoop } from "kontra";
 import { GameConfig } from "./code/data/GameConfig";
 import PrepareFightScene from "./code/functions/PrepareFightScene";
 
-import { player1, player2, fightScene } from "./code/data/Instances";
+import {
+  player1,
+  player2,
+  fightScene,
+  rematchScene,
+} from "./code/data/Instances";
 import { LoadAssets } from "./code/functions/LoadAssets";
 import { Scene } from "./code/types/Scene";
 
@@ -16,11 +21,15 @@ window.addEventListener("DOMContentLoaded", async () => {
     update: function (dt) {
       if (GameConfig.currentScene === Scene.Fight) {
         fightScene.update(dt);
+      } else {
+        rematchScene.update(dt);
       }
     },
     render: function () {
       if (GameConfig.currentScene === Scene.Fight) {
         fightScene.render();
+      } else {
+        rematchScene.render();
       }
     },
   });

@@ -10,6 +10,7 @@ import { player1, player2 } from "../data/Instances";
 import { WinSequence } from "./WinSequence";
 import ResetFight from "./ResetFight";
 import { toggleKOColor } from "../modules/TopPanel/TopPanel";
+import PrepareRematchScene from "./PrepareRematchScene";
 
 export default function CheckGameState(dt: number | undefined) {
   if (dt) {
@@ -68,12 +69,19 @@ export default function CheckGameState(dt: number | undefined) {
 
       if (
         GameConfig.roundWinTimer > 0 &&
-        GameConfig.roundWinTimer < roundWinTextTimer &&
+        GameConfig.roundWinTimer < fadeToWhiteTimer &&
         GameConfig.matchWon === true
       ) {
         GameConfig.winScreenOpacity =
           (1 / fadeToWhiteTimer) * GameConfig.roundWinTimer;
         GameConfig.roundWinTimer += dt;
+      }
+
+      if (
+        GameConfig.roundWinTimer >= fadeToWhiteTimer &&
+        GameConfig.matchWon === true
+      ) {
+        PrepareRematchScene();
       }
     }
   }
