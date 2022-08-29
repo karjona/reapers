@@ -14,6 +14,7 @@ import { BottomPanel } from "./code/modules/BottomPanel/BottomPanel";
 import { GameConfig } from "./code/data/GameConfig";
 import CheckGameState from "./code/functions/CheckGameState";
 import { AnnouncerText } from "./code/modules/AnnouncerText/AnnouncerText";
+import { WinScreen } from "./code/modules/WinScreen/WinScreen";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { player1Image, player2Image } = await LoadAssets();
@@ -33,6 +34,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         CheckGameState(dt);
       }
       AnnouncerText.update();
+      WinScreen.update();
     },
     render: function () {
       TopPanel.render();
@@ -43,6 +45,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         TrainingPanel.render();
       }
       AnnouncerText.render();
+      WinScreen.render();
     },
   });
 

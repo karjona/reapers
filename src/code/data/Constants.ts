@@ -13,3 +13,4 @@ export const roundsToWin = 2;
 export const getReadyTextTimer = 1;
 export const fightTextTimer = 1.5;
 export const roundWinTextTimer = 3;
+export const fadeToWhiteTimer = 1;

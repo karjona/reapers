@@ -4,6 +4,8 @@ interface GameConfig {
   readyTimer: number;
   roundWinTimer: number;
   koLabelFlashTimer: number;
+  winScreenOpacity: number;
+  matchWon: boolean;
 }
 
 const DefaultGameConfig: GameConfig = {
@@ -12,6 +14,8 @@ const DefaultGameConfig: GameConfig = {
   readyTimer: 0,
   roundWinTimer: 0,
   koLabelFlashTimer: 0,
+  winScreenOpacity: 0,
+  matchWon: false,
 };
 
 export const GameConfig: GameConfig = DefaultGameConfig;

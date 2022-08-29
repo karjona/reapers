@@ -3,6 +3,7 @@ import {
   getReadyTextTimer,
   fightTextTimer,
   roundWinTextTimer,
+  fadeToWhiteTimer,
 } from "../data/Constants";
 import { setAnnouncerText } from "../modules/AnnouncerText/AnnouncerText";
 import { player1, player2 } from "../data/Instances";
@@ -36,12 +37,14 @@ export default function CheckGameState(dt: number) {
       player1.canMove = false;
       player2.canMove = false;
       GameConfig.fightersCanAct = false;
+      GameConfig.roundWinTimer += dt;
       WinSequence(player1.health > 0 ? player1 : player2);
     }
 
     if (
       GameConfig.roundWinTimer > 0 &&
-      GameConfig.roundWinTimer < roundWinTextTimer
+      GameConfig.roundWinTimer < roundWinTextTimer &&
+      GameConfig.matchWon === false
     ) {
       if (GameConfig.koLabelFlashTimer === 0) {
         GameConfig.koLabelFlashTimer++;
@@ -51,11 +54,25 @@ export default function CheckGameState(dt: number) {
       } else {
         GameConfig.koLabelFlashTimer = 0;
       }
+      GameConfig.roundWinTimer += dt;
     }
 
-    if (GameConfig.roundWinTimer >= roundWinTextTimer) {
+    if (
+      GameConfig.roundWinTimer >= roundWinTextTimer &&
+      GameConfig.matchWon === false
+    ) {
+      GameConfig.roundWinTimer = 0;
       ResetFight();
     }
-    GameConfig.roundWinTimer += dt;
+
+    if (
+      GameConfig.roundWinTimer > 0 &&
+      GameConfig.roundWinTimer < roundWinTextTimer &&
+      GameConfig.matchWon === true
+    ) {
+      GameConfig.winScreenOpacity =
+        (1 / fadeToWhiteTimer) * GameConfig.roundWinTimer;
+      GameConfig.roundWinTimer += dt;
+    }
   }
 }
