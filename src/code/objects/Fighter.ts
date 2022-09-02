@@ -332,8 +332,6 @@ export default class Fighter {
     this.handleAttack();
     this.handleStun();
     this.hitbox.update();
-    this.hurtbox.update();
-    this.sprite.update();
   }
 
   render() {
