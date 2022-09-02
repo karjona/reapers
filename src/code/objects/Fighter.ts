@@ -26,7 +26,7 @@ import {
 } from "../modules/TrainingPanel/TrainingPanel";
 import { GameConfig } from "../data/GameConfig";
 import PlaySfx from "../../sounds/PlaySfx";
-import { emptyHit } from "../../sounds/sfx";
+import { attackSfx } from "../../sounds/sfx";
 
 export enum Position {
   Left,
@@ -168,7 +168,6 @@ export default class Fighter {
   private handleAttack() {
     if (this.position === Position.Left) {
       onKey("k", () => {
-        PlaySfx(emptyHit);
         if (GameConfig.fightersCanAct) {
           movesToAddToTraining.push("🗡");
           TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
@@ -311,6 +310,7 @@ export default class Fighter {
 
   private attack(attack: Attack) {
     if (this.attackingFrames === 0) {
+      PlaySfx(attackSfx);
       const attackLength = attack.startup + attack.active + attack.recovery;
       this.doingAttack = attack;
       this.startupFrames = attack.startup;

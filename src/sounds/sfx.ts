@@ -1,4 +1,4 @@
-export const emptyHit = [
+export const attackSfx = [
   ,
   ,
   1302,
