@@ -1,4 +1,4 @@
-import { GameLoop } from "kontra";
+import { GameLoop, onKey } from "kontra";
 import { GameConfig } from "./code/data/GameConfig";
 import PrepareFightScene from "./code/functions/PrepareFightScene";
 
@@ -11,6 +11,7 @@ import {
 } from "./code/data/Instances";
 import { LoadAssets } from "./code/functions/LoadAssets";
 import { Scene } from "./code/types/Scene";
+import PlayMusic from "./sounds/PlayMusic";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { player1Image, player2Image, fightBgImage } = await LoadAssets();
@@ -18,6 +19,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   player2.addSpriteSheet(player2Image);
   fightBackground.image = fightBgImage;
   PrepareFightScene();
+  onKey("m", () => {
+    PlayMusic();
+  });
 
   const gameloop = GameLoop({
     update: function (dt) {
