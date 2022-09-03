@@ -6,8 +6,9 @@ export const fighterHealth = 100;
 
 export const leftFighterXStartPosition = 30;
 export const rightFighterXStartPosition = 106;
+export const skyLevel = 100;
 export const groundLevel = 130;
-export const fighterYStartPosition = groundLevel - fighterHeight;
+export const fighterYStartPosition = skyLevel - fighterHeight;
 
 export const roundsToWin = 2;
 export const getReadyTextTimer = 1;

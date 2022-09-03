@@ -53,6 +53,7 @@ export default class Fighter {
   sprite: Sprite;
   hurtbox: GameObject;
   hitbox: GameObject;
+  shadow: GameObject;
 
   constructor(position: Position) {
     this.position = position;
@@ -63,6 +64,19 @@ export default class Fighter {
 
     this.hurtbox = GameObject({});
 
+    this.shadow = Sprite({
+      x: 0,
+      y: 0,
+      render: () => {
+        const context = getContext();
+        context.scale(1, 0.2);
+        context.beginPath();
+        context.fillStyle = "#202020";
+        context.arc(12, 320, 10, 0, 2 * Math.PI);
+        context.fill();
+      },
+    });
+
     this.hitbox = GameObject({
       width: fighterWidth,
       height: fighterHeight,
@@ -71,7 +85,7 @@ export default class Fighter {
           ? leftFighterXStartPosition
           : rightFighterXStartPosition,
       y: fighterYStartPosition,
-      children: [this.sprite],
+      children: [this.sprite, this.shadow],
       properties: {
         type: "fighterHitbox",
       },
