@@ -11,6 +11,7 @@ import { WinScreen } from "../modules/WinScreen/WinScreen";
 import { GameConfig } from "../data/GameConfig";
 import CheckGameState from "./CheckGameState";
 import CheckFighterCollisions from "./CheckFighterCollisions";
+import { toggleTrainingPanel } from "../modules/TrainingPanel/TrainingPanel";
 
 export default function PrepareFightScene() {
   fightScene.add([
@@ -24,6 +25,7 @@ export default function PrepareFightScene() {
   ]);
 
   fightScene.update = function (dt) {
+    toggleTrainingPanel();
     CheckFighterCollisions();
     if (GameConfig.fightersCanAct === false) {
       CheckGameState(dt);

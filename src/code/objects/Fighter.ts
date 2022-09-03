@@ -18,12 +18,7 @@ import {
 } from "../data/Constants";
 import { Attack } from "../types/Attack";
 import { Jab } from "../data/Attacks";
-import {
-  movesToAddToTraining,
-  isTrainingPanelEnabled,
-  addMoveToTrainingPanel,
-  TrainingData,
-} from "../modules/TrainingPanel/TrainingPanel";
+import { isTrainingPanelEnabled } from "../modules/TrainingPanel/TrainingPanel";
 import { GameConfig } from "../data/GameConfig";
 import PlaySfx from "../../sounds/PlaySfx";
 import { attackSfx } from "../../sounds/Sfx";
@@ -141,14 +136,6 @@ export default class Fighter {
       if (this.canMove === false) {
         this.stop();
       }
-
-      if (this.movingLeft) {
-        movesToAddToTraining.unshift("⬅️");
-      }
-
-      if (this.movingRight) {
-        movesToAddToTraining.unshift("➡️");
-      }
     }
 
     if (this.position === Position.Right) {
@@ -169,8 +156,6 @@ export default class Fighter {
     if (this.position === Position.Left) {
       onKey("k", () => {
         if (GameConfig.fightersCanAct) {
-          movesToAddToTraining.push("🗡");
-          TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
           this.attack(Jab);
         }
       });
@@ -179,7 +164,6 @@ export default class Fighter {
     if (this.position === Position.Right) {
       onKey("y", () => {
         if (GameConfig.fightersCanAct) {
-          TrainingData.attackFrames = Jab.startup + Jab.active + Jab.recovery;
           this.attack(Jab);
         }
       });
@@ -187,9 +171,6 @@ export default class Fighter {
 
     if (this.attackingFrames > 0) {
       this.attackingFrames--;
-      if (this.position === Position.Left) {
-        TrainingData.attackFrames = this.attackingFrames;
-      }
 
       if (this.startupFrames > 0) {
         this.startupFrames--;
@@ -324,10 +305,6 @@ export default class Fighter {
   }
 
   update() {
-    if (this.position === Position.Left) {
-      addMoveToTrainingPanel(movesToAddToTraining);
-    }
-
     this.handleMovement();
     this.handleAttack();
     this.handleStun();

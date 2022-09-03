@@ -11,6 +11,7 @@ import {
 } from "./code/data/Instances";
 import { LoadAssets } from "./code/functions/LoadAssets";
 import { Scene } from "./code/types/Scene";
+
 import PlayMusic from "./sounds/PlayMusic";
 import { song } from "./sounds/Music";
 

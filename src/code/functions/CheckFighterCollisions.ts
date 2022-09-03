@@ -1,7 +1,6 @@
 import { collides } from "kontra";
 import { canvas, player1, player2 } from "../data/Instances";
 import { fighterWalkSpeed } from "../data/Constants";
-import { TrainingData } from "../modules/TrainingPanel/TrainingPanel";
 import { GameConfig } from "../data/GameConfig";
 
 export default function CheckFighterCollisions() {
@@ -35,8 +34,6 @@ export default function CheckFighterCollisions() {
           player2.canMove = false;
           player2.stun =
             player1.attackingFrames + player1.doingAttack.advantage;
-          TrainingData.frameAdvantage = player1.doingAttack.advantage;
-          TrainingData.damage = player1.doingAttack.damage;
           player1.attackAlreadyHit = true;
         }
       }
