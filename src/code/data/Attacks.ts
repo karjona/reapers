@@ -2,9 +2,9 @@ import { Attack } from "../types/Attack";
 
 export const Jab: Attack = {
   damage: 10,
-  startup: 5,
-  active: 4,
-  recovery: 4,
+  startup: 50,
+  active: 40,
+  recovery: 40,
   width: 18,
   height: 10,
   y: 10,

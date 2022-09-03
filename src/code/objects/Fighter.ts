@@ -187,7 +187,10 @@ export default class Fighter {
           height: this.doingAttack.height,
           y: this.doingAttack.y,
           ttl: this.doingAttack.active,
-          x: this.hitbox.width,
+          x:
+            this.position === Position.Left
+              ? this.hitbox.width
+              : -this.doingAttack.width,
           render: function (this: GameObject) {
             if (isTrainingPanelEnabled()) {
               const context = getContext();
