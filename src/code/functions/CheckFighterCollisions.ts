@@ -23,11 +23,13 @@ export default function CheckFighterCollisions() {
     if (player1.doingAttack) {
       if (!player1.attackAlreadyHit) {
         if (player1.doingAttack.damage >= player2.health) {
+          player2.sprite.playAnimation("ko");
           player1.attackAlreadyHit = true;
           GameConfig.fightersCanAct = false;
           player2.health = 0;
           player1.roundsWon += 1;
         } else {
+          player2.sprite.playAnimation("hit");
           player2.recoil = 10;
           player2.health -= player1.doingAttack.damage;
           player2.canMove = false;
