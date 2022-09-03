@@ -25,6 +25,8 @@ import {
   TrainingData,
 } from "../modules/TrainingPanel/TrainingPanel";
 import { GameConfig } from "../data/GameConfig";
+import PlaySfx from "../../sounds/PlaySfx";
+import { attackSfx } from "../../sounds/Sfx";
 
 export enum Position {
   Left,
@@ -96,16 +98,26 @@ export default class Fighter {
       frameHeight: 37,
       animations: {
         idle: {
-          frames: 0,
+          frames: [0, 1],
+          frameRate: 1,
         },
         jabStartup: {
-          frames: 1,
-        },
-        jabActive: {
           frames: 2,
         },
+        jabActive: {
+          frames: 3,
+        },
         jabRecovery: {
-          frames: 1,
+          frames: 2,
+        },
+        guard: {
+          frames: 4,
+        },
+        hit: {
+          frames: 5,
+        },
+        ko: {
+          frames: 6,
         },
       },
     });
@@ -261,10 +273,12 @@ export default class Fighter {
     }
 
     if (this.stun > 0) {
+      this.sprite.playAnimation("hit");
       this.stun--;
       if (this.stun === 0) {
         this.canMove = true;
         this.hitboxColor = "yellow";
+        this.sprite.playAnimation("idle");
       }
     }
   }
@@ -296,6 +310,7 @@ export default class Fighter {
 
   private attack(attack: Attack) {
     if (this.attackingFrames === 0) {
+      PlaySfx(attackSfx);
       const attackLength = attack.startup + attack.active + attack.recovery;
       this.doingAttack = attack;
       this.startupFrames = attack.startup;
@@ -317,7 +332,6 @@ export default class Fighter {
     this.handleAttack();
     this.handleStun();
     this.hitbox.update();
-    this.hurtbox.update();
   }
 
   render() {

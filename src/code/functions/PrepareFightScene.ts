@@ -1,4 +1,9 @@
-import { fightScene, player1, player2 } from "../data/Instances";
+import {
+  fightBackground,
+  fightScene,
+  player1,
+  player2,
+} from "../data/Instances";
 import { TopPanel } from "../modules/TopPanel/TopPanel";
 import { BottomPanel } from "../modules/BottomPanel/BottomPanel";
 import { AnnouncerText } from "../modules/AnnouncerText/AnnouncerText";
@@ -9,6 +14,7 @@ import CheckFighterCollisions from "./CheckFighterCollisions";
 
 export default function PrepareFightScene() {
   fightScene.add([
+    fightBackground,
     player1,
     player2,
     TopPanel,
