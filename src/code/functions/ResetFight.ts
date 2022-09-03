@@ -1,6 +1,7 @@
 import { fightScene, player1, player2, rematchScene } from "../data/Instances";
 import {
   fighterHealth,
+  fighterYStartPosition,
   leftFighterXStartPosition,
   rightFighterXStartPosition,
 } from "../data/Constants";
@@ -26,11 +27,14 @@ export default function ResetFight(rematch = false) {
     fighter.movingRight = false;
     fighter.canMove = true;
     fighter.hitboxColor = "yellow";
+    fighter.roundEndBounces = 0;
 
     // move all players back to start position
     fighter.position === Position.Left
       ? (fighter.hitbox.x = leftFighterXStartPosition)
       : (fighter.hitbox.x = rightFighterXStartPosition);
+    fighter.hitbox.y = fighterYStartPosition;
+    fighter.shadow.y = 0;
 
     // reset all player animations to idle
     fighter.sprite.playAnimation("idle");

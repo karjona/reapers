@@ -7,7 +7,7 @@ import {
 } from "../data/Constants";
 import { setAnnouncerText } from "../modules/AnnouncerText/AnnouncerText";
 import { player1, player2 } from "../data/Instances";
-import { WinSequence } from "./WinSequence";
+import { bounceOfGround, WinSequence } from "./WinSequence";
 import ResetFight from "./ResetFight";
 import { toggleKOColor } from "../modules/TopPanel/TopPanel";
 import PrepareRematchScene from "./PrepareRematchScene";
@@ -34,6 +34,7 @@ export default function CheckGameState(dt: number | undefined) {
         setAnnouncerText("GET READY");
       }
       GameConfig.readyTimer += dt;
+      // One fighter is dead
     } else {
       if (GameConfig.roundWinTimer === 0) {
         player1.canMove = false;
@@ -48,6 +49,7 @@ export default function CheckGameState(dt: number | undefined) {
         GameConfig.roundWinTimer < roundWinTextTimer &&
         GameConfig.matchWon === false
       ) {
+        bounceOfGround(player2);
         if (GameConfig.koLabelFlashTimer === 0) {
           GameConfig.koLabelFlashTimer++;
           toggleKOColor();
