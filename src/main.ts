@@ -12,6 +12,7 @@ import {
 import { LoadAssets } from "./code/functions/LoadAssets";
 import { Scene } from "./code/types/Scene";
 import PlayMusic from "./sounds/PlayMusic";
+import { song } from "./sounds/Music";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { player1Image, player2Image, fightBgImage } = await LoadAssets();
@@ -20,7 +21,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   fightBackground.image = fightBgImage;
   PrepareFightScene();
   onKey("m", () => {
-    PlayMusic();
+    PlayMusic(song);
   });
 
   const gameloop = GameLoop({

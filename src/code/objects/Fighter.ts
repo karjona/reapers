@@ -26,7 +26,7 @@ import {
 } from "../modules/TrainingPanel/TrainingPanel";
 import { GameConfig } from "../data/GameConfig";
 import PlaySfx from "../../sounds/PlaySfx";
-import { attackSfx } from "../../sounds/sfx";
+import { attackSfx } from "../../sounds/Sfx";
 
 export enum Position {
   Left,
