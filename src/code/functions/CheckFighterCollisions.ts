@@ -40,25 +40,36 @@ export default function CheckFighterCollisions() {
     }
   }
 
-  // Player 1 hits player 2
-  if (collides(player1.hurtbox, player2.hitbox)) {
-    player2.hitboxColor = "red";
-    if (player1.doingAttack) {
-      if (!player1.attackAlreadyHit) {
-        if (player1.doingAttack.damage >= player2.health) {
-          player2.sprite.playAnimation("ko");
-          player1.attackAlreadyHit = true;
+  // Player hits
+  if (
+    collides(player1.hurtbox, player2.hitbox) ||
+    collides(player2.hurtbox, player1.hitbox)
+  ) {
+    const whoIsHurt = collides(player1.hurtbox, player2.hitbox)
+      ? player2
+      : player1;
+    const whoIsAttacking = collides(player1.hurtbox, player2.hitbox)
+      ? player1
+      : player2;
+
+    whoIsHurt.hitboxColor = "red";
+    if (whoIsAttacking.doingAttack) {
+      if (!whoIsAttacking.attackAlreadyHit) {
+        if (whoIsAttacking.doingAttack.damage >= whoIsHurt.health) {
+          whoIsHurt.sprite.playAnimation("ko");
+          whoIsAttacking.attackAlreadyHit = true;
           GameConfig.fightersCanAct = false;
-          player2.health = 0;
-          player1.roundsWon += 1;
+          whoIsHurt.health = 0;
+          whoIsAttacking.roundsWon += 1;
         } else {
-          player2.sprite.playAnimation("hit");
-          player2.recoil = 10;
-          player2.health -= player1.doingAttack.damage;
-          player2.canMove = false;
-          player2.stun =
-            player1.attackingFrames + player1.doingAttack.advantage;
-          player1.attackAlreadyHit = true;
+          whoIsHurt.sprite.playAnimation("hit");
+          whoIsHurt.recoil = 10;
+          whoIsHurt.health -= whoIsAttacking.doingAttack.damage;
+          whoIsHurt.canMove = false;
+          whoIsHurt.stun =
+            whoIsAttacking.attackingFrames +
+            whoIsAttacking.doingAttack.advantage;
+          whoIsAttacking.attackAlreadyHit = true;
         }
       }
     }
