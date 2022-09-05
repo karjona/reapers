@@ -137,7 +137,7 @@ async function prepareAnimateFightersRematchScreen(whoWon: string | null) {
   }
 
   // prepare fighters for animation
-  winningFighter.x = -60;
+  winningFighter.x = whoWon === "PLAYER 1" ? -60 : canvas.width;
   winningFighter.y = 70;
   await LoadAssets().then((assets) => {
     const spritesheet = prepareSpriteSheet(
@@ -146,7 +146,7 @@ async function prepareAnimateFightersRematchScreen(whoWon: string | null) {
     winningFighter.animations = spritesheet.animations;
   });
 
-  losingFighter.x = 0;
+  losingFighter.x = whoWon === "PLAYER 1" ? 0 : canvas.width;
   losingFighter.y = 70;
   await LoadAssets().then((assets) => {
     const spritesheet = prepareSpriteSheet(
@@ -156,21 +156,32 @@ async function prepareAnimateFightersRematchScreen(whoWon: string | null) {
   });
 
   losingFighter.playAnimation("ko");
-  losingFighter.dx = 200;
+  losingFighter.dx = whoWon === "PLAYER 1" ? 200 : -200;
   RematchScreen.addChild(winningFighter, losingFighter);
 
   cursor.x = 12;
   fightersAnimationFrame++;
 }
 
-function animateFightersRematchScreen() {
-  if (losingFighter.x >= canvas.width - losingFighter.width) {
-    losingFighter.dx = 0;
-    winningFighter.dx = 40;
-  }
+function animateFightersRematchScreen(whoWon: string | null) {
+  if (whoWon === "PLAYER 1") {
+    if (losingFighter.x >= canvas.width - losingFighter.width) {
+      losingFighter.dx = 0;
+      winningFighter.dx = 40;
+    }
 
-  if (winningFighter.x >= 10) {
-    winningFighter.dx = 0;
+    if (winningFighter.x >= 10) {
+      winningFighter.dx = 0;
+    }
+  } else {
+    if (losingFighter.x <= 0) {
+      losingFighter.dx = 0;
+      winningFighter.dx = -40;
+    }
+
+    if (winningFighter.x <= canvas.width - winningFighter.width - 10) {
+      winningFighter.dx = 0;
+    }
   }
 
   fightersAnimationFrame++;
@@ -217,6 +228,6 @@ export const RematchScreen = GameObject({
       }
     }
 
-    animateFightersRematchScreen();
+    animateFightersRematchScreen(GameConfig.whoWon);
   },
 });
