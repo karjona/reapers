@@ -1,7 +1,7 @@
 import { Attack } from "../types/Attack";
 
 export const Jab: Attack = {
-  damage: 100,
+  damage: 25,
   startup: 15,
   active: 12,
   recovery: 12,
