@@ -22,3 +22,14 @@ export const fightScene = Scene({
 export const rematchScene = Scene({
   id: "rematchScene",
 });
+
+export const titleScene = Scene({
+  id: "titleScene",
+  onShow: function () {
+    // @ts-ignore
+    this.objects.forEach((object) => {
+      // @ts-ignore
+      object.opacity = 0;
+    });
+  },
+});

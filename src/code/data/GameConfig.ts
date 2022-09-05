@@ -21,7 +21,7 @@ const DefaultGameConfig: GameConfig = {
   winScreenOpacity: 0,
   matchWon: false,
   whoWon: null,
-  currentScene: Scene.Fight,
+  currentScene: Scene.Title,
 };
 
 export const GameConfig: GameConfig = DefaultGameConfig;

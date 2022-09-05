@@ -8,14 +8,21 @@ import {
 } from "kontra";
 import { fighterSpritesheet } from "../../data/Constants";
 import { GameConfig } from "../../data/GameConfig";
-import { canvas, renderText } from "../../data/Instances";
+import {
+  canvas,
+  renderText,
+  titleScene,
+  fightScene,
+} from "../../data/Instances";
 import { LoadAssets } from "../../functions/LoadAssets";
+import { Scene } from "../../types/Scene";
 import ResetFight from "../../functions/ResetFight";
 
 const flashCursorMaxTimer = 1;
 let flashCursorTimer = 0;
 let currentCursorFlash = 0;
 let cursorCanMove = true;
+let switchToScene: Scene | null = null;
 
 let fightersAnimationFrame = 0;
 const winningFighter = Sprite({
@@ -80,6 +87,11 @@ function handleCursor(dt: number) {
   if (cursor.x === 12 && flashCursorTimer === 0) {
     cursorCanMove = false;
     flashCursorTimer += dt;
+    switchToScene = Scene.Fight;
+  } else if (cursor.x === 72 && flashCursorTimer === 0) {
+    cursorCanMove = false;
+    flashCursorTimer += dt;
+    switchToScene = Scene.Title;
   }
 }
 
@@ -101,16 +113,44 @@ function flashCursor(dt: number) {
     flashCursorTimer += dt;
   }
 
-  if (flashCursorTimer >= flashCursorMaxTimer) {
+  if (
+    switchToScene === Scene.Fight &&
+    flashCursorTimer >= flashCursorMaxTimer
+  ) {
     flashCursorTimer = 0;
     currentCursorFlash = 0;
     cursorCanMove = true;
     cursor.text = "🔥";
 
     ResetFight(true);
+    GameConfig.currentScene = Scene.Fight;
+    fightScene.show();
+
     fightersAnimationFrame = 0;
     loreTextContentPhrase1 = "";
     loreTextContentPhrase2 = "";
+    switchToScene = null;
+
+    RematchScreen.removeChild(winningFighter, losingFighter);
+  }
+
+  if (
+    switchToScene === Scene.Title &&
+    flashCursorTimer >= flashCursorMaxTimer
+  ) {
+    flashCursorTimer = 0;
+    currentCursorFlash = 0;
+    cursorCanMove = true;
+    cursor.text = "🔥";
+
+    ResetFight(true);
+    GameConfig.currentScene = Scene.Title;
+    titleScene.show();
+    fightersAnimationFrame = 0;
+    loreTextContentPhrase1 = "";
+    loreTextContentPhrase2 = "";
+    switchToScene = null;
+
     RematchScreen.removeChild(winningFighter, losingFighter);
   }
 }
