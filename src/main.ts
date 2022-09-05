@@ -19,6 +19,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   player2.addSpriteSheet(player2Image);
   fightBackground.image = fightBgImage;
   await PrepareTitleScene();
+  titleScene.show();
 
   const gameloop = GameLoop({
     update: function (dt) {

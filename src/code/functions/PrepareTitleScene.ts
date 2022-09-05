@@ -1,6 +1,9 @@
-import { GameObject, Sprite, Text, loadImage } from "kontra";
+import { GameObject, Sprite, loadImage } from "kontra";
 import { titleScene, renderText } from "../data/Instances";
 import logo from "/src/images/background/reapers.webp";
+
+let pressKeyFlash = 0;
+let pressKeyLabel = "";
 
 export default async function PrepareTitleScene() {
   const titleSceneBackground = GameObject({
@@ -41,19 +44,11 @@ export default async function PrepareTitleScene() {
     },
   });
 
-  const cursor = Text({
-    x: 38,
-    y: 130,
-    text: "🔥",
-    color: "white",
-    font: "8px monospace",
-  });
-
   const pressKeyText = GameObject({
     x: 50,
     y: 132,
     render: function () {
-      renderText("PRESS K TO START", 0, 0, 5, "cyan");
+      renderText(pressKeyLabel, 0, 0, 5, "orangered");
     },
   });
 
@@ -62,19 +57,34 @@ export default async function PrepareTitleScene() {
     titleSprite,
     destinyText,
     reapersText,
-    cursor,
     pressKeyText,
   ]);
 
   titleScene.update = function () {
     titleScene.objects.forEach((object) => {
       // @ts-ignore
+      if (object.opacity < 1) {
+        // @ts-ignore
+        object.opacity += 0.01;
+      }
+      // @ts-ignore
       object.update();
     });
+
+    if (pressKeyFlash <= 60) {
+      pressKeyLabel = "";
+      pressKeyFlash++;
+    } else if (pressKeyFlash >= 61 && pressKeyFlash <= 120) {
+      pressKeyLabel = "PRESS K TO START";
+      pressKeyFlash++;
+    } else {
+      pressKeyFlash = 0;
+    }
   };
 
   titleScene.render = function () {
-    titleScene.objects.forEach((object) => {
+    // @ts-ignore
+    this.objects.forEach((object) => {
       // @ts-ignore
       object.render();
     });
