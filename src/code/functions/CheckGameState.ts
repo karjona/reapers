@@ -21,6 +21,7 @@ export default function CheckGameState(dt: number | undefined) {
       ) {
         setAnnouncerText("");
         GameConfig.fightersCanAct = true;
+        GameConfig.roundWinTimer = 0;
       }
 
       if (

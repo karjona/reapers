@@ -6,15 +6,17 @@ let label = "";
 
 export const AnnouncerText = GameObject({
   x: 0,
-  y: 70,
+  y: 71,
   render: function () {
-    renderText(label, 0, 0, 5, "white");
+    renderText(label, 1, 1, 10, "black");
+    //renderText(label, 0, 0, 10, "dodgerblue");
+    renderText(label, 0, 0, 10, "orangered");
   },
 });
 
 export function setAnnouncerText(text: string) {
-  const textWidth = text.length * 5;
+  label = text;
+  const textWidth = text.length * 8;
   const labelXCoord = Math.round(canvas.width / 2 - textWidth / 2);
   AnnouncerText.x = labelXCoord;
-  label = text;
 }

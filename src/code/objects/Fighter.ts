@@ -41,7 +41,7 @@ export default class Fighter {
   recoil = 0;
 
   health = fighterHealth;
-  roundsWon = 1;
+  roundsWon = 0;
   roundEndBounces = 0;
 
   movingLeft = false;
