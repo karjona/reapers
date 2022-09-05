@@ -83,7 +83,8 @@ export default function CheckGameState(dt: number | undefined) {
         GameConfig.roundWinTimer >= fadeToWhiteTimer &&
         GameConfig.matchWon === true
       ) {
-        PrepareRematchScene(player1.health > 0 ? player1 : player2);
+        GameConfig.whoWon = player1.health > 0 ? "PLAYER 1" : "PLAYER 2";
+        PrepareRematchScene();
       }
     }
   }

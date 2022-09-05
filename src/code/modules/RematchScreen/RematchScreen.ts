@@ -1,5 +1,12 @@
-import { GameObject, getContext, onKey, Text, Sprite } from "kontra";
-import { fighterHeight, fighterWidth } from "../../data/Constants";
+import {
+  GameObject,
+  getContext,
+  onKey,
+  Text,
+  Sprite,
+  SpriteSheet,
+} from "kontra";
+import { fighterSpritesheet } from "../../data/Constants";
 import { GameConfig } from "../../data/GameConfig";
 import { canvas, renderText } from "../../data/Instances";
 import { LoadAssets } from "../../functions/LoadAssets";
@@ -12,12 +19,12 @@ let cursorCanMove = true;
 
 let fightersAnimationFrame = 0;
 const winningFighter = Sprite({
-  height: fighterHeight,
-  width: fighterWidth,
+  width: 60,
+  height: 37,
 });
 const losingFighter = Sprite({
-  height: fighterHeight,
-  width: fighterWidth,
+  width: 60,
+  height: 37,
 });
 
 let loreTextContentPhrase1 = "";
@@ -99,41 +106,71 @@ function flashCursor(dt: number) {
     currentCursorFlash = 0;
     cursorCanMove = true;
     cursor.text = "🔥";
-    cursor.x = 12;
 
     ResetFight(true);
     fightersAnimationFrame = 0;
     loreTextContentPhrase1 = "";
     loreTextContentPhrase2 = "";
+    RematchScreen.removeChild(winningFighter, losingFighter);
   }
 }
 
-async function animateFightersRematchScreen(whoWon: string | null) {
-  console.log("animate");
-  if (fightersAnimationFrame === 0) {
-    // set lore text
-    if (whoWon === "PLAYER 1") {
-      loreTextContentPhrase1 = "NOMIQUIEL CARRIES ON GIVING THEIR";
-      loreTextContentPhrase2 = "BREATH TO THE LIVING WORLDS";
-    } else {
-      loreTextContentPhrase1 = "OMIQUIEL BEGINS THEIR DEADLY FEAST";
-      loreTextContentPhrase2 = "OF THE LIVING REALMS";
-    }
+function prepareSpriteSheet(img: HTMLImageElement) {
+  const spriteSheet = SpriteSheet({
+    image: img,
+    frameWidth: 60,
+    frameHeight: 37,
+    animations: fighterSpritesheet,
+  });
 
-    console.log("this");
-    // prepare fighters for animation
-    winningFighter.x = 0;
-    winningFighter.y = 70;
-    winningFighter.image = await LoadAssets().then((assets) => {
-      return whoWon === "PLAYER 1" ? assets.player1Image : assets.player2Image;
-    });
-    losingFighter.x = 0;
-    losingFighter.y = 70;
-    losingFighter.image = await LoadAssets().then((assets) => {
-      return whoWon === "PLAYER 1" ? assets.player2Image : assets.player1Image;
-    });
+  return spriteSheet;
+}
 
-    RematchScreen.addChild(winningFighter, losingFighter);
+async function prepareAnimateFightersRematchScreen(whoWon: string | null) {
+  // set lore text
+  if (whoWon === "PLAYER 1") {
+    loreTextContentPhrase1 = "NOMIQUIEL CARRIES ON GIVING THEIR";
+    loreTextContentPhrase2 = "BREATH TO THE LIVING WORLDS";
+  } else {
+    loreTextContentPhrase1 = "OMIQUIEL BEGINS THEIR DEADLY FEAST";
+    loreTextContentPhrase2 = "OF THE LIVING REALMS";
+  }
+
+  // prepare fighters for animation
+  winningFighter.x = -60;
+  winningFighter.y = 70;
+  await LoadAssets().then((assets) => {
+    const spritesheet = prepareSpriteSheet(
+      whoWon === "PLAYER 1" ? assets.player1Image : assets.player2Image
+    );
+    winningFighter.animations = spritesheet.animations;
+  });
+
+  losingFighter.x = 0;
+  losingFighter.y = 70;
+  await LoadAssets().then((assets) => {
+    const spritesheet = prepareSpriteSheet(
+      whoWon === "PLAYER 1" ? assets.player2Image : assets.player1Image
+    );
+    losingFighter.animations = spritesheet.animations;
+  });
+
+  losingFighter.playAnimation("ko");
+  losingFighter.dx = 200;
+  RematchScreen.addChild(winningFighter, losingFighter);
+
+  cursor.x = 12;
+  fightersAnimationFrame++;
+}
+
+function animateFightersRematchScreen() {
+  if (losingFighter.x >= canvas.width - losingFighter.width) {
+    losingFighter.dx = 0;
+    winningFighter.dx = 40;
+  }
+
+  if (winningFighter.x >= 10) {
+    winningFighter.dx = 0;
   }
 
   fightersAnimationFrame++;
@@ -145,12 +182,15 @@ export const RematchScreen = GameObject({
   width: canvas.width,
   height: canvas.height,
   children: [winText, loreText, rematchText, exitText, cursor],
-  render: function () {
+  render: async function () {
     const context = getContext();
     context.fillStyle = "white";
     context.fillRect(0, 0, canvas.width, canvas.height);
+    if (fightersAnimationFrame <= 1) {
+      await prepareAnimateFightersRematchScreen(GameConfig.whoWon);
+    }
   },
-  update: async (dt) => {
+  update: (dt) => {
     onKey("arrowright", () => {
       if (cursorCanMove) {
         moveCursor();
@@ -177,6 +217,6 @@ export const RematchScreen = GameObject({
       }
     }
 
-    await animateFightersRematchScreen(GameConfig.whoWon);
+    animateFightersRematchScreen();
   },
 });

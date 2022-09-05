@@ -15,3 +15,28 @@ export const getReadyTextTimer = 1;
 export const fightTextTimer = 1.5;
 export const roundWinTextTimer = 3;
 export const fadeToWhiteTimer = 1;
+
+export const fighterSpritesheet = {
+  idle: {
+    frames: [0, 1],
+    frameRate: 1,
+  },
+  jabStartup: {
+    frames: 2,
+  },
+  jabActive: {
+    frames: 3,
+  },
+  jabRecovery: {
+    frames: 2,
+  },
+  guard: {
+    frames: 4,
+  },
+  hit: {
+    frames: 5,
+  },
+  ko: {
+    frames: 6,
+  },
+};

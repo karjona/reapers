@@ -9,6 +9,7 @@ import { Position } from "../objects/Fighter";
 import { GameObject } from "kontra";
 import { GameConfig } from "../data/GameConfig";
 import { Scene } from "../types/Scene";
+import { RematchScreen } from "../modules/RematchScreen/RematchScreen";
 
 export default function ResetFight(rematch = false) {
   const fighters = [player1, player2];
@@ -55,11 +56,11 @@ export default function ResetFight(rematch = false) {
   if (rematch) {
     // switch scenes
     rematchScene.destroy();
+    rematchScene.remove([RematchScreen]);
     GameConfig.currentScene = Scene.Fight;
+    fightScene.show();
     GameConfig.matchWon = false;
-    GameConfig.whoWon = null;
     GameConfig.winScreenOpacity = 0;
     GameConfig.koLabelFlashTimer = 0;
-    fightScene.show();
   }
 }

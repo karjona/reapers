@@ -15,6 +15,7 @@ import {
   leftFighterXStartPosition,
   rightFighterXStartPosition,
   fighterYStartPosition,
+  fighterSpritesheet,
 } from "../data/Constants";
 import { Attack } from "../types/Attack";
 import { Jab } from "../data/Attacks";
@@ -106,30 +107,7 @@ export default class Fighter {
       image: image,
       frameWidth: 60,
       frameHeight: 37,
-      animations: {
-        idle: {
-          frames: [0, 1],
-          frameRate: 1,
-        },
-        jabStartup: {
-          frames: 2,
-        },
-        jabActive: {
-          frames: 3,
-        },
-        jabRecovery: {
-          frames: 2,
-        },
-        guard: {
-          frames: 4,
-        },
-        hit: {
-          frames: 5,
-        },
-        ko: {
-          frames: 6,
-        },
-      },
+      animations: fighterSpritesheet,
     });
 
     this.sprite.animations = spriteSheet.animations;
