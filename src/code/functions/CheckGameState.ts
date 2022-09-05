@@ -49,7 +49,7 @@ export default function CheckGameState(dt: number | undefined) {
         GameConfig.roundWinTimer < roundWinTextTimer &&
         GameConfig.matchWon === false
       ) {
-        bounceOfGround(player2);
+        bounceOfGround(player1.health > 0 ? player2 : player1);
         if (GameConfig.koLabelFlashTimer === 0) {
           GameConfig.koLabelFlashTimer++;
           toggleKOColor();

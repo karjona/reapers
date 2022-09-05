@@ -21,6 +21,7 @@ export function bounceOfGround(fighter: Fighter) {
   }
 }
 
+// shoot the player off screen when they have lost the match
 function shootOfScreen(fighter: Fighter) {
   fighter.hitbox.dx += fighter.position === Position.Left ? -5 : 5;
 }
