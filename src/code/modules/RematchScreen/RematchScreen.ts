@@ -55,7 +55,7 @@ const cursor = Text({
 });
 
 const winText = GameObject({
-  x: 20,
+  x: 24,
   y: 20,
   render: function () {
     renderText(`${GameConfig.whoWon} WINS!`, 1, 1, 10, "grey");
@@ -67,8 +67,8 @@ const loreText = GameObject({
   x: 3,
   y: 40,
   render: function () {
-    renderText(loreTextContentPhrase1, 0, 0, 5, "black");
-    renderText(loreTextContentPhrase2, 0, 8, 5, "black");
+    renderText(loreTextContentPhrase1, 7, 0, 5, "black");
+    renderText(loreTextContentPhrase2, 7, 8, 5, "black");
   },
 });
 
@@ -130,10 +130,10 @@ async function prepareAnimateFightersRematchScreen(whoWon: string | null) {
   // set lore text
   if (whoWon === "PLAYER 1") {
     loreTextContentPhrase1 = "NOMIQUIEL CARRIES ON GIVING THEIR";
-    loreTextContentPhrase2 = "BREATH TO THE LIVING WORLDS";
+    loreTextContentPhrase2 = "BREATH TO THE LIVING WORLDS...";
   } else {
     loreTextContentPhrase1 = "OMIQUIEL BEGINS THEIR DEADLY FEAST";
-    loreTextContentPhrase2 = "OF THE LIVING REALMS";
+    loreTextContentPhrase2 = "OF THE LIVING REALMS...";
   }
 
   // prepare fighters for animation
