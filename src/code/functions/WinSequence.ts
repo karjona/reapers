@@ -21,6 +21,10 @@ export function bounceOfGround(fighter: Fighter) {
   }
 }
 
+function shootOfScreen(fighter: Fighter) {
+  fighter.hitbox.dx += fighter.position === Position.Left ? -5 : 5;
+}
+
 export function WinSequence(whoWon: Fighter) {
   if (whoWon.roundsWon !== roundsToWin) {
     whoWon === player1
@@ -28,6 +32,7 @@ export function WinSequence(whoWon: Fighter) {
       : setAnnouncerText("PLAYER 2 WINS!");
     bounceOfGround(whoWon === player1 ? player2 : player1);
   } else {
+    shootOfScreen(whoWon === player1 ? player2 : player1);
     GameConfig.matchWon = true;
   }
 }

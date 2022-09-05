@@ -137,31 +137,37 @@ export default class Fighter {
 
   private handleMovement() {
     if (this.position === Position.Left) {
-      this.movingRight = ["arrowright"].some(keyPressed);
-      this.movingLeft = ["arrowleft"].some(keyPressed);
-
-      if (this.movingLeft && this.canMove) {
-        this.move(Position.Left);
-      } else if (this.movingRight && this.canMove) {
-        this.move(Position.Right);
+      if (this.canMove) {
+        this.movingRight = ["arrowright"].some(keyPressed);
+        this.movingLeft = ["arrowleft"].some(keyPressed);
       } else {
-        this.stop();
+        this.movingRight = false;
+        this.movingLeft = false;
       }
 
-      if (this.canMove === false) {
+      if (this.movingLeft) {
+        this.move(Position.Left);
+      } else if (this.movingRight) {
+        this.move(Position.Right);
+      } else if (this.canMove) {
         this.stop();
       }
     }
 
     if (this.position === Position.Right) {
-      this.movingRight = ["g"].some(keyPressed);
-      this.movingLeft = ["d"].some(keyPressed);
-
-      if (this.movingLeft && this.canMove) {
-        this.move(Position.Left);
-      } else if (this.movingRight && this.canMove) {
-        this.move(Position.Right);
+      if (this.canMove) {
+        this.movingRight = ["g"].some(keyPressed);
+        this.movingLeft = ["d"].some(keyPressed);
       } else {
+        this.movingLeft = false;
+        this.movingRight = false;
+      }
+
+      if (this.movingLeft) {
+        this.move(Position.Left);
+      } else if (this.movingRight) {
+        this.move(Position.Right);
+      } else if (this.canMove) {
         this.stop();
       }
     }
@@ -171,6 +177,7 @@ export default class Fighter {
     if (this.position === Position.Left) {
       onKey("k", () => {
         if (GameConfig.fightersCanAct) {
+          this.stop();
           this.attack(Jab);
         }
       });
@@ -179,6 +186,7 @@ export default class Fighter {
     if (this.position === Position.Right) {
       onKey("y", () => {
         if (GameConfig.fightersCanAct) {
+          this.stop();
           this.attack(Jab);
         }
       });
