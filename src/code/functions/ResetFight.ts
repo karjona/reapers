@@ -1,4 +1,4 @@
-import { fightScene, player1, player2, rematchScene } from "../data/Instances";
+import { player1, player2, rematchScene } from "../data/Instances";
 import {
   fighterHealth,
   fighterYStartPosition,
@@ -8,7 +8,6 @@ import {
 import { Position } from "../objects/Fighter";
 import { GameObject } from "kontra";
 import { GameConfig } from "../data/GameConfig";
-import { Scene } from "../types/Scene";
 import { RematchScreen } from "../modules/RematchScreen/RematchScreen";
 
 export default function ResetFight(rematch = false) {
@@ -57,8 +56,6 @@ export default function ResetFight(rematch = false) {
     // switch scenes
     rematchScene.destroy();
     rematchScene.remove([RematchScreen]);
-    GameConfig.currentScene = Scene.Fight;
-    fightScene.show();
     GameConfig.matchWon = false;
     GameConfig.winScreenOpacity = 0;
     GameConfig.koLabelFlashTimer = 0;

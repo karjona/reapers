@@ -1,8 +1,8 @@
 import { GameObject, Sprite, loadImage, onKey, offKey } from "kontra";
 import { GameConfig } from "../data/GameConfig";
-import { titleScene, renderText } from "../data/Instances";
+import { fightScene, titleScene, renderText } from "../data/Instances";
 import { Scene } from "../types/Scene";
-import PrepareFightScene from "./PrepareFightScene";
+import ResetFight from "./ResetFight";
 import logo from "/src/images/background/reapers.webp";
 
 let pressKeyFlash = 0;
@@ -93,7 +93,10 @@ export default async function PrepareTitleScene() {
     if (fightSceneDelay === 121) {
       titleScene.destroy();
       GameConfig.currentScene = Scene.Fight;
-      PrepareFightScene();
+
+      ResetFight(true);
+      fightScene.show();
+
       pressKeyFlash = 0;
       pressKeyLabel = "";
       fightSceneDelay = 0;
