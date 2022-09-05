@@ -7,7 +7,7 @@ import {
 } from "../data/Constants";
 import { setAnnouncerText } from "../modules/AnnouncerText/AnnouncerText";
 import { player1, player2 } from "../data/Instances";
-import { WinSequence } from "./WinSequence";
+import { bounceOfGround, WinSequence } from "./WinSequence";
 import ResetFight from "./ResetFight";
 import { toggleKOColor } from "../modules/TopPanel/TopPanel";
 import PrepareRematchScene from "./PrepareRematchScene";
@@ -21,6 +21,7 @@ export default function CheckGameState(dt: number | undefined) {
       ) {
         setAnnouncerText("");
         GameConfig.fightersCanAct = true;
+        GameConfig.roundWinTimer = 0;
       }
 
       if (
@@ -34,6 +35,7 @@ export default function CheckGameState(dt: number | undefined) {
         setAnnouncerText("GET READY");
       }
       GameConfig.readyTimer += dt;
+      // One fighter is dead
     } else {
       if (GameConfig.roundWinTimer === 0) {
         player1.canMove = false;
@@ -48,6 +50,7 @@ export default function CheckGameState(dt: number | undefined) {
         GameConfig.roundWinTimer < roundWinTextTimer &&
         GameConfig.matchWon === false
       ) {
+        bounceOfGround(player1.health > 0 ? player2 : player1);
         if (GameConfig.koLabelFlashTimer === 0) {
           GameConfig.koLabelFlashTimer++;
           toggleKOColor();
@@ -81,7 +84,8 @@ export default function CheckGameState(dt: number | undefined) {
         GameConfig.roundWinTimer >= fadeToWhiteTimer &&
         GameConfig.matchWon === true
       ) {
-        PrepareRematchScene(player1.health > 0 ? player1 : player2);
+        GameConfig.whoWon = player1.health > 0 ? "PLAYER 1" : "PLAYER 2";
+        PrepareRematchScene();
       }
     }
   }

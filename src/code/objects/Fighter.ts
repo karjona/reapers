@@ -15,6 +15,7 @@ import {
   leftFighterXStartPosition,
   rightFighterXStartPosition,
   fighterYStartPosition,
+  fighterSpritesheet,
 } from "../data/Constants";
 import { Attack } from "../types/Attack";
 import { Jab } from "../data/Attacks";
@@ -41,6 +42,7 @@ export default class Fighter {
 
   health = fighterHealth;
   roundsWon = 0;
+  roundEndBounces = 0;
 
   movingLeft = false;
   movingRight = false;
@@ -53,6 +55,7 @@ export default class Fighter {
   sprite: Sprite;
   hurtbox: GameObject;
   hitbox: GameObject;
+  shadow: GameObject;
 
   constructor(position: Position) {
     this.position = position;
@@ -63,6 +66,19 @@ export default class Fighter {
 
     this.hurtbox = GameObject({});
 
+    this.shadow = Sprite({
+      x: 0,
+      y: 0,
+      render: () => {
+        const context = getContext();
+        context.scale(1, 0.2);
+        context.beginPath();
+        context.fillStyle = "#202020";
+        context.arc(12, 320, 10, 0, 2 * Math.PI);
+        context.fill();
+      },
+    });
+
     this.hitbox = GameObject({
       width: fighterWidth,
       height: fighterHeight,
@@ -71,7 +87,7 @@ export default class Fighter {
           ? leftFighterXStartPosition
           : rightFighterXStartPosition,
       y: fighterYStartPosition,
-      children: [this.sprite],
+      children: [this.sprite, this.shadow],
       properties: {
         type: "fighterHitbox",
       },
@@ -91,30 +107,7 @@ export default class Fighter {
       image: image,
       frameWidth: 60,
       frameHeight: 37,
-      animations: {
-        idle: {
-          frames: [0, 1],
-          frameRate: 1,
-        },
-        jabStartup: {
-          frames: 2,
-        },
-        jabActive: {
-          frames: 3,
-        },
-        jabRecovery: {
-          frames: 2,
-        },
-        guard: {
-          frames: 4,
-        },
-        hit: {
-          frames: 5,
-        },
-        ko: {
-          frames: 6,
-        },
-      },
+      animations: fighterSpritesheet,
     });
 
     this.sprite.animations = spriteSheet.animations;
@@ -122,31 +115,37 @@ export default class Fighter {
 
   private handleMovement() {
     if (this.position === Position.Left) {
-      this.movingRight = ["arrowright"].some(keyPressed);
-      this.movingLeft = ["arrowleft"].some(keyPressed);
-
-      if (this.movingLeft && this.canMove) {
-        this.move(Position.Left);
-      } else if (this.movingRight && this.canMove) {
-        this.move(Position.Right);
+      if (this.canMove) {
+        this.movingRight = ["arrowright"].some(keyPressed);
+        this.movingLeft = ["arrowleft"].some(keyPressed);
       } else {
-        this.stop();
+        this.movingRight = false;
+        this.movingLeft = false;
       }
 
-      if (this.canMove === false) {
+      if (this.movingLeft) {
+        this.move(Position.Left);
+      } else if (this.movingRight) {
+        this.move(Position.Right);
+      } else if (this.canMove) {
         this.stop();
       }
     }
 
     if (this.position === Position.Right) {
-      this.movingRight = ["g"].some(keyPressed);
-      this.movingLeft = ["d"].some(keyPressed);
-
-      if (this.movingLeft && this.canMove) {
-        this.move(Position.Left);
-      } else if (this.movingRight && this.canMove) {
-        this.move(Position.Right);
+      if (this.canMove) {
+        this.movingRight = ["g"].some(keyPressed);
+        this.movingLeft = ["d"].some(keyPressed);
       } else {
+        this.movingLeft = false;
+        this.movingRight = false;
+      }
+
+      if (this.movingLeft) {
+        this.move(Position.Left);
+      } else if (this.movingRight) {
+        this.move(Position.Right);
+      } else if (this.canMove) {
         this.stop();
       }
     }
@@ -156,6 +155,7 @@ export default class Fighter {
     if (this.position === Position.Left) {
       onKey("k", () => {
         if (GameConfig.fightersCanAct) {
+          this.stop();
           this.attack(Jab);
         }
       });
@@ -164,6 +164,7 @@ export default class Fighter {
     if (this.position === Position.Right) {
       onKey("y", () => {
         if (GameConfig.fightersCanAct) {
+          this.stop();
           this.attack(Jab);
         }
       });
