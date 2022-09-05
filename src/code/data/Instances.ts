@@ -22,3 +22,7 @@ export const fightScene = Scene({
 export const rematchScene = Scene({
   id: "rematchScene",
 });
+
+export const titleScene = Scene({
+  id: "titleScene",
+});

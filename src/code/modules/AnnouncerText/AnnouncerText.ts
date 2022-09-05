@@ -9,7 +9,6 @@ export const AnnouncerText = GameObject({
   y: 71,
   render: function () {
     renderText(label, 1, 1, 10, "black");
-    //renderText(label, 0, 0, 10, "dodgerblue");
     renderText(label, 0, 0, 10, "orangered");
   },
 });

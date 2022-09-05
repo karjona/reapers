@@ -1,6 +1,6 @@
-import { GameLoop, onKey } from "kontra";
+import { GameLoop } from "kontra";
 import { GameConfig } from "./code/data/GameConfig";
-import PrepareFightScene from "./code/functions/PrepareFightScene";
+import PrepareTitleScene from "./code/functions/PrepareTitleScene";
 
 import {
   player1,
@@ -8,36 +8,35 @@ import {
   fightScene,
   rematchScene,
   fightBackground,
+  titleScene,
 } from "./code/data/Instances";
 import { LoadAssets } from "./code/functions/LoadAssets";
 import { Scene } from "./code/types/Scene";
-
-import PlayMusic from "./sounds/PlayMusic";
-import { song } from "./sounds/Music";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { player1Image, player2Image, fightBgImage } = await LoadAssets();
   player1.addSpriteSheet(player1Image);
   player2.addSpriteSheet(player2Image);
   fightBackground.image = fightBgImage;
-  PrepareFightScene();
-  onKey("m", () => {
-    PlayMusic(song);
-  });
+  await PrepareTitleScene();
 
   const gameloop = GameLoop({
     update: function (dt) {
       if (GameConfig.currentScene === Scene.Fight) {
         fightScene.update(dt);
-      } else {
+      } else if (GameConfig.currentScene === Scene.Rematch) {
         rematchScene.update(dt);
+      } else {
+        titleScene.update(dt);
       }
     },
     render: function () {
       if (GameConfig.currentScene === Scene.Fight) {
         fightScene.render();
-      } else {
+      } else if (GameConfig.currentScene === Scene.Rematch) {
         rematchScene.render();
+      } else {
+        titleScene.render();
       }
     },
   });
