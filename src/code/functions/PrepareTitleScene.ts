@@ -1,9 +1,13 @@
-import { GameObject, Sprite, loadImage } from "kontra";
+import { GameObject, Sprite, loadImage, onKey, offKey } from "kontra";
+import { GameConfig } from "../data/GameConfig";
 import { titleScene, renderText } from "../data/Instances";
+import { Scene } from "../types/Scene";
+import PrepareFightScene from "./PrepareFightScene";
 import logo from "/src/images/background/reapers.webp";
 
 let pressKeyFlash = 0;
 let pressKeyLabel = "";
+let fightSceneDelay = 0;
 
 export default async function PrepareTitleScene() {
   const titleSceneBackground = GameObject({
@@ -80,6 +84,25 @@ export default async function PrepareTitleScene() {
     } else {
       pressKeyFlash = 0;
     }
+
+    if (fightSceneDelay <= 120 && fightSceneDelay >= 1) {
+      fightSceneDelay++;
+      pressKeyLabel = "";
+    }
+
+    if (fightSceneDelay === 121) {
+      titleScene.destroy();
+      GameConfig.currentScene = Scene.Fight;
+      PrepareFightScene();
+      pressKeyFlash = 0;
+      pressKeyLabel = "";
+      fightSceneDelay = 0;
+    }
+
+    onKey("k", () => {
+      offKey("k");
+      fightSceneDelay++;
+    });
   };
 
   titleScene.render = function () {
