@@ -17,6 +17,8 @@ import {
 import { LoadAssets } from "../../functions/LoadAssets";
 import { Scene } from "../../types/Scene";
 import ResetFight from "../../functions/ResetFight";
+import PlaySfx from "../../../sounds/PlaySfx";
+import { menuSfx } from "../../../sounds/Sfx";
 
 const flashCursorMaxTimer = 1;
 let flashCursorTimer = 0;
@@ -257,6 +259,7 @@ export const RematchScreen = GameObject({
     onKey("k", () => {
       if (cursorCanMove) {
         if (dt !== undefined) {
+          PlaySfx(menuSfx);
           handleCursor(dt);
         }
       }
