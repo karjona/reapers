@@ -346,7 +346,7 @@ export default class Fighter {
   }
 
   private parry() {
-    if (this.parryFrames === 0) {
+    if (this.parryFrames === 0 && this.canMove) {
       this.stun = parrySelfStun;
       this.parryFrames = parryWindow;
       this.canMove = false;
@@ -356,7 +356,7 @@ export default class Fighter {
   }
 
   private attack(attack: Attack) {
-    if (this.attackingFrames === 0) {
+    if (this.attackingFrames === 0 && this.canMove) {
       PlaySfx(attackSfx);
       const attackLength = attack.startup + attack.active + attack.recovery;
       this.doingAttack = attack;
