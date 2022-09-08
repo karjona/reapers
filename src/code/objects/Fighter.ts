@@ -181,7 +181,6 @@ export default class Fighter {
 
     if (this.parryFrames > 0) {
       this.parryFrames--;
-      console.log(`parryFrames: ${this.parryFrames}`);
     }
 
     if (this.isParrying && this.parryFrames === 0) {
