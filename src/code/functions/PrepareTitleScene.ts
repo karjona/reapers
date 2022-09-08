@@ -1,4 +1,6 @@
 import { GameObject, Sprite, loadImage, onKey, offKey } from "kontra";
+import PlaySfx from "../../sounds/PlaySfx";
+import { menuSfx } from "../../sounds/Sfx";
 import { GameConfig } from "../data/GameConfig";
 import { fightScene, titleScene, renderText } from "../data/Instances";
 import { Scene } from "../types/Scene";
@@ -104,6 +106,7 @@ export default async function PrepareTitleScene() {
 
     onKey("k", () => {
       offKey("k");
+      PlaySfx(menuSfx);
       fightSceneDelay++;
     });
   };

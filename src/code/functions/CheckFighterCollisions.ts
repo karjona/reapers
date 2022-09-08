@@ -1,7 +1,9 @@
 import { collides } from "kontra";
 import { canvas, player1, player2 } from "../data/Instances";
-import { fighterWalkSpeed } from "../data/Constants";
+import { fighterWalkSpeed, parrySuccessStun } from "../data/Constants";
 import { GameConfig } from "../data/GameConfig";
+import PlaySfx from "../../sounds/PlaySfx";
+import { hitSfx, koSfx, parrySfx } from "../../sounds/Sfx";
 
 export default function CheckFighterCollisions() {
   // Player collisions
@@ -52,17 +54,21 @@ export default function CheckFighterCollisions() {
       ? player1
       : player2;
 
-    whoIsHurt.hitboxColor = "red";
     if (whoIsAttacking.doingAttack) {
-      if (!whoIsAttacking.attackAlreadyHit) {
+      if (!whoIsAttacking.attackAlreadyHit && !whoIsHurt.isParrying) {
+        whoIsHurt.hitboxColor = "red";
+        // Player is KO
         if (whoIsAttacking.doingAttack.damage >= whoIsHurt.health) {
           whoIsHurt.sprite.playAnimation("ko");
+          PlaySfx(koSfx);
           whoIsAttacking.attackAlreadyHit = true;
           GameConfig.fightersCanAct = false;
           whoIsHurt.health = 0;
           whoIsAttacking.roundsWon += 1;
+          // Player received hit and takes damage
         } else {
           whoIsHurt.sprite.playAnimation("hit");
+          PlaySfx(hitSfx);
           whoIsHurt.recoil = 10;
           whoIsHurt.health -= whoIsAttacking.doingAttack.damage;
           whoIsHurt.canMove = false;
@@ -71,6 +77,23 @@ export default function CheckFighterCollisions() {
             whoIsAttacking.doingAttack.advantage;
           whoIsAttacking.attackAlreadyHit = true;
         }
+        // Player parries attack
+      } else if (!whoIsAttacking.attackAlreadyHit && whoIsHurt.isParrying) {
+        PlaySfx(parrySfx);
+        whoIsHurt.sprite.playAnimation("idle");
+        whoIsHurt.hitboxColor = "yellow";
+        whoIsHurt.canMove = true;
+        whoIsHurt.parryFrames = 0;
+        whoIsHurt.isParrying = false;
+
+        whoIsAttacking.recoil = 10;
+        whoIsAttacking.stun = parrySuccessStun;
+        whoIsAttacking.startupFrames = 0;
+        whoIsAttacking.activeFrames = 0;
+        whoIsAttacking.recoveryFrames = 0;
+        whoIsAttacking.doingAttack = null;
+        whoIsAttacking.attackAlreadyHit = false;
+        whoIsAttacking.sprite.playAnimation("hit");
       }
     }
   }

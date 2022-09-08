@@ -4,6 +4,10 @@ export const fighterWalkSpeed = 1;
 
 export const fighterHealth = 100;
 
+export const parryWindow = 20;
+export const parrySelfStun = 60;
+export const parrySuccessStun = 120;
+
 export const leftFighterXStartPosition = 30;
 export const rightFighterXStartPosition = 106;
 export const skyLevel = 100;

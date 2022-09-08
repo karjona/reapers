@@ -16,6 +16,8 @@ import {
   rightFighterXStartPosition,
   fighterYStartPosition,
   fighterSpritesheet,
+  parryWindow,
+  parrySelfStun,
 } from "../data/Constants";
 import { Attack } from "../types/Attack";
 import { Jab } from "../data/Attacks";
@@ -36,6 +38,9 @@ export default class Fighter {
   startupFrames = 0;
   activeFrames = 0;
   recoveryFrames = 0;
+
+  parryFrames = 0;
+  isParrying = false;
 
   stun = 0;
   recoil = 0;
@@ -151,23 +156,62 @@ export default class Fighter {
     }
   }
 
-  private handleAttack() {
-    if (this.position === Position.Left) {
-      onKey("k", () => {
-        if (GameConfig.fightersCanAct) {
+  private handleParry() {
+    if (
+      GameConfig.fightersCanAct &&
+      this.doingAttack === null &&
+      this.stun === 0 &&
+      this.recoil === 0 &&
+      this.parryFrames === 0
+    ) {
+      if (this.position === Position.Left) {
+        onKey("l", () => {
           this.stop();
-          this.attack(Jab);
-        }
-      });
+          this.parry();
+        });
+      }
+
+      if (this.position === Position.Right) {
+        onKey("u", () => {
+          this.stop();
+          this.parry();
+        });
+      }
     }
 
-    if (this.position === Position.Right) {
-      onKey("y", () => {
-        if (GameConfig.fightersCanAct) {
+    if (this.parryFrames > 0) {
+      this.parryFrames--;
+    }
+
+    if (this.isParrying && this.parryFrames === 0) {
+      this.isParrying = false;
+      this.canMove = true;
+      this.hitboxColor = "yellow";
+      this.sprite.playAnimation("idle");
+    }
+  }
+
+  private handleAttack() {
+    if (
+      GameConfig.fightersCanAct &&
+      this.doingAttack === null &&
+      this.stun === 0 &&
+      this.recoil === 0 &&
+      this.parryFrames === 0
+    ) {
+      if (this.position === Position.Left) {
+        onKey("k", () => {
           this.stop();
           this.attack(Jab);
-        }
-      });
+        });
+      }
+
+      if (this.position === Position.Right) {
+        onKey("y", () => {
+          this.stop();
+          this.attack(Jab);
+        });
+      }
     }
 
     if (this.attackingFrames > 0) {
@@ -225,6 +269,7 @@ export default class Fighter {
 
     if (
       this.attackingFrames === 0 &&
+      !this.isParrying &&
       !this.canMove &&
       GameConfig.fightersCanAct == true
     ) {
@@ -243,6 +288,7 @@ export default class Fighter {
 
   private handleStun() {
     if (this.recoil > 0) {
+      this.sprite.playAnimation("hit");
       this.recoil--;
       if (this.position == Position.Left) {
         this.hitbox.x -= 1;
@@ -258,13 +304,19 @@ export default class Fighter {
     }
 
     if (this.stun > 0) {
-      this.sprite.playAnimation("hit");
+      this.hitboxColor = "red";
+      this.canMove = false;
+      this.stop();
       this.stun--;
-      if (this.stun === 0) {
+      if (this.stun === 0 && this.health > 0) {
         this.canMove = true;
         this.hitboxColor = "yellow";
         this.sprite.playAnimation("idle");
       }
+    }
+
+    if (this.stun > 0 && this.isParrying) {
+      this.hitboxColor = "purple";
     }
   }
 
@@ -293,8 +345,18 @@ export default class Fighter {
     this.hitbox.dx = 0;
   }
 
+  private parry() {
+    if (this.parryFrames === 0 && this.canMove) {
+      this.stun = parrySelfStun;
+      this.parryFrames = parryWindow;
+      this.canMove = false;
+      this.isParrying = true;
+      this.sprite.playAnimation("guard");
+    }
+  }
+
   private attack(attack: Attack) {
-    if (this.attackingFrames === 0) {
+    if (this.attackingFrames === 0 && this.canMove) {
       PlaySfx(attackSfx);
       const attackLength = attack.startup + attack.active + attack.recovery;
       this.doingAttack = attack;
@@ -312,6 +374,7 @@ export default class Fighter {
     this.handleMovement();
     this.handleAttack();
     this.handleStun();
+    this.handleParry();
     this.hitbox.update();
   }
 
