@@ -37,6 +37,9 @@ export default class Fighter {
   activeFrames = 0;
   recoveryFrames = 0;
 
+  parryFrames = 0;
+  isParrying = false;
+
   stun = 0;
   recoil = 0;
 
@@ -151,23 +154,67 @@ export default class Fighter {
     }
   }
 
-  private handleAttack() {
-    if (this.position === Position.Left) {
-      onKey("k", () => {
-        if (GameConfig.fightersCanAct) {
+  private handleParry() {
+    if (
+      GameConfig.fightersCanAct &&
+      this.doingAttack === null &&
+      this.stun === 0 &&
+      this.recoil === 0 &&
+      this.parryFrames === 0
+    ) {
+      if (this.position === Position.Left) {
+        onKey("l", () => {
           this.stop();
-          this.attack(Jab);
-        }
-      });
+          this.parry();
+        });
+      }
+
+      if (this.position === Position.Right) {
+        onKey("u", () => {
+          this.stop();
+          this.parry();
+        });
+      }
     }
 
-    if (this.position === Position.Right) {
-      onKey("y", () => {
-        if (GameConfig.fightersCanAct) {
+    if (this.parryFrames > 0) {
+      this.parryFrames--;
+    }
+
+    if (this.isParrying && this.parryFrames === 0) {
+      this.isParrying = false;
+      this.canMove = true;
+      this.hitboxColor = "yellow";
+      this.sprite.playAnimation("idle");
+    }
+
+    if (this.isParrying) {
+      //this.hitboxColor = "purple";
+      //this.sprite.playAnimation("guard");
+    }
+  }
+
+  private handleAttack() {
+    if (
+      GameConfig.fightersCanAct &&
+      this.doingAttack === null &&
+      this.stun === 0 &&
+      this.recoil === 0 &&
+      this.parryFrames === 0
+    ) {
+      if (this.position === Position.Left) {
+        onKey("k", () => {
           this.stop();
           this.attack(Jab);
-        }
-      });
+        });
+      }
+
+      if (this.position === Position.Right) {
+        onKey("y", () => {
+          this.stop();
+          this.attack(Jab);
+        });
+      }
     }
 
     if (this.attackingFrames > 0) {
@@ -225,6 +272,7 @@ export default class Fighter {
 
     if (
       this.attackingFrames === 0 &&
+      !this.isParrying &&
       !this.canMove &&
       GameConfig.fightersCanAct == true
     ) {
@@ -293,6 +341,17 @@ export default class Fighter {
     this.hitbox.dx = 0;
   }
 
+  private parry() {
+    if (this.parryFrames === 0) {
+      this.parryFrames = 9;
+      PlaySfx(attackSfx);
+      this.hitboxColor = "purple";
+      this.canMove = false;
+      this.isParrying = true;
+      this.sprite.playAnimation("guard");
+    }
+  }
+
   private attack(attack: Attack) {
     if (this.attackingFrames === 0) {
       PlaySfx(attackSfx);
@@ -312,6 +371,7 @@ export default class Fighter {
     this.handleMovement();
     this.handleAttack();
     this.handleStun();
+    this.handleParry();
     this.hitbox.update();
   }
 
