@@ -17,6 +17,7 @@ import {
   fighterYStartPosition,
   fighterSpritesheet,
   parryWindow,
+  parrySelfStun,
 } from "../data/Constants";
 import { Attack } from "../types/Attack";
 import { Jab } from "../data/Attacks";
@@ -180,6 +181,7 @@ export default class Fighter {
 
     if (this.parryFrames > 0) {
       this.parryFrames--;
+      console.log(`parryFrames: ${this.parryFrames}`);
     }
 
     if (this.isParrying && this.parryFrames === 0) {
@@ -287,6 +289,7 @@ export default class Fighter {
 
   private handleStun() {
     if (this.recoil > 0) {
+      this.sprite.playAnimation("hit");
       this.recoil--;
       if (this.position == Position.Left) {
         this.hitbox.x -= 1;
@@ -302,13 +305,19 @@ export default class Fighter {
     }
 
     if (this.stun > 0) {
-      this.sprite.playAnimation("hit");
+      this.hitboxColor = "red";
+      this.canMove = false;
+      this.stop();
       this.stun--;
-      if (this.stun === 0) {
+      if (this.stun === 0 && this.health > 0) {
         this.canMove = true;
         this.hitboxColor = "yellow";
         this.sprite.playAnimation("idle");
       }
+    }
+
+    if (this.stun > 0 && this.isParrying) {
+      this.hitboxColor = "purple";
     }
   }
 
@@ -339,8 +348,8 @@ export default class Fighter {
 
   private parry() {
     if (this.parryFrames === 0) {
+      this.stun = parrySelfStun;
       this.parryFrames = parryWindow;
-      this.hitboxColor = "purple";
       this.canMove = false;
       this.isParrying = true;
       this.sprite.playAnimation("guard");

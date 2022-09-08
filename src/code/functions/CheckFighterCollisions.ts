@@ -1,6 +1,6 @@
 import { collides } from "kontra";
 import { canvas, player1, player2 } from "../data/Instances";
-import { fighterWalkSpeed } from "../data/Constants";
+import { fighterWalkSpeed, parrySuccessStun } from "../data/Constants";
 import { GameConfig } from "../data/GameConfig";
 import PlaySfx from "../../sounds/PlaySfx";
 import { hitSfx, koSfx, parrySfx } from "../../sounds/Sfx";
@@ -87,7 +87,7 @@ export default function CheckFighterCollisions() {
         whoIsHurt.isParrying = false;
 
         whoIsAttacking.recoil = 10;
-        whoIsAttacking.stun = 40;
+        whoIsAttacking.stun = parrySuccessStun;
         whoIsAttacking.startupFrames = 0;
         whoIsAttacking.activeFrames = 0;
         whoIsAttacking.recoveryFrames = 0;
