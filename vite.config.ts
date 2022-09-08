@@ -18,7 +18,7 @@ export default defineConfig({
         image: true,
       },
     }),
-    compress({ verbose: true }),
+    compress({ brotli: false }),
     ViteMinifyPlugin(),
     viteSingleFile(),
   ],
