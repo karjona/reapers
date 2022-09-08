@@ -2,11 +2,13 @@
 
 Reapers is a fighting game made in TypeScript for the [js13kGames 2022](https://js13kgames.com/) competition. The main goal is to create a game in less than 13KB! The theme for this year was "death".
 
+Go to [karjona.github.io/reapers/](https://karjona.github.io/reapers/) to play the game!
+
 ## Backstory
 
 On the green fields near Mount Serrat, two otherworldly entities, Omiquiel, the devourer of souls, and Nomiquiel, the bestower of breath, come together once every thousand years to fight for the dominion of the living realms.
 
-In a battle known as The Tournament of Destiny, they fight…
+In a battle known as The Tournament of Destiny, they fight...
 
 ## About the game
 
@@ -18,19 +20,28 @@ Will you bait your opponents attack and parry it? Or will you try to get in clos
 
 ### Player 1
 
-| Key | Action |
-| Move left | Left arrow |
+| Key        | Action      |
+| ---------- | ----------- |
+| Move left  | Left arrow  |
 | Move right | Right arrow |
-| Attack | K |
-| Parry | L |
+| Attack     | K           |
+| Parry      | L           |
 
 ### Player 2
 
-| Key | Action |
-| Move left | D |
-| Move right | G |
-| Attack | Y |
-| Parry | U |
+| Key        | Action |
+| ---------- | ------ |
+| Move left  | D      |
+| Move right | G      |
+| Attack     | Y      |
+| Parry      | U      |
+
+### General
+
+| Key | Action                         |
+| --- | ------------------------------ |
+| T   | Show hitboxes during play      |
+| K   | Start the game and menu select |
 
 ## How to build from source
 
