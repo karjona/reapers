@@ -16,6 +16,7 @@ import {
   rightFighterXStartPosition,
   fighterYStartPosition,
   fighterSpritesheet,
+  parryWindow,
 } from "../data/Constants";
 import { Attack } from "../types/Attack";
 import { Jab } from "../data/Attacks";
@@ -187,11 +188,6 @@ export default class Fighter {
       this.hitboxColor = "yellow";
       this.sprite.playAnimation("idle");
     }
-
-    if (this.isParrying) {
-      //this.hitboxColor = "purple";
-      //this.sprite.playAnimation("guard");
-    }
   }
 
   private handleAttack() {
@@ -343,8 +339,7 @@ export default class Fighter {
 
   private parry() {
     if (this.parryFrames === 0) {
-      this.parryFrames = 9;
-      PlaySfx(attackSfx);
+      this.parryFrames = parryWindow;
       this.hitboxColor = "purple";
       this.canMove = false;
       this.isParrying = true;
