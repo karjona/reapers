@@ -16,6 +16,10 @@ This 2D fighting game is based on fighting games fundamentals known as _footsies
 
 Will you bait your opponents attack and parry it? Or will you try to get in close and land a hit? The choice is yours!
 
+## How to play
+
+The game only has local multiplayer. You can play with a friend on the same computer or with a friend on another computer using [Parsec](https://parsec.app) or a similar service.
+
 ## Controls
 
 ### Player 1
@@ -69,6 +73,6 @@ npm run build
 
 ## Credits
 
-All code is written by me, [Kilian Arjona](https://about.me/karjona). All art, backstory, and sound effects are made by me beautiful wife, ❤️ Valeria Sivkova.
+All code is written by me, [Kilian Arjona](https://about.me/karjona). All art, backstory, and sound effects are made by my beautiful wife, ❤️ Valeria Sivkova.
 
 Full license can be found in the [LICENSE](LICENSE) file.
