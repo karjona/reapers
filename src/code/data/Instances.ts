@@ -14,10 +14,10 @@ export const fightBackground = GameObject({
   x: 0,
   y: 0,
   width: 160,
-  height: 150,
+  height: 132,
   render: function (this: GameObject) {
     const context = getContext();
-    const gradient = context.createLinearGradient(0, 0, 0, 150);
+    const gradient = context.createLinearGradient(0, 0, 0, 132);
     gradient.addColorStop(0, "dimgray");
     gradient.addColorStop(1, "darkgray");
     context.fillStyle = gradient;

@@ -1,4 +1,4 @@
-import { GameObject, Sprite, loadImage, onKey, offKey } from "kontra";
+import { GameObject, onKey, offKey } from "kontra";
 import PlaySfx from "../../sounds/PlaySfx";
 import { menuSfx } from "../../sounds/Sfx";
 import { GameConfig } from "../data/GameConfig";
