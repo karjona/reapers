@@ -9,12 +9,9 @@ export default defineConfig({
   plugins: [
     kontra({
       gameObject: {
-        acceleration: true,
         anchor: true,
         group: true,
         opacity: true,
-        rotation: true,
-        scale: true,
         ttl: true,
         velocity: true,
       },
