@@ -1,8 +1,6 @@
 name: Build and deploy to GitHub Pages
 
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
