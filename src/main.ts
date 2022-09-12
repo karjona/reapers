@@ -7,7 +7,6 @@ import {
   player2,
   fightScene,
   rematchScene,
-  fightBackground,
   titleScene,
 } from "./code/data/Instances";
 import { LoadAssets } from "./code/functions/LoadAssets";
@@ -15,10 +14,9 @@ import { Scene } from "./code/types/Scene";
 import PrepareFightScene from "./code/functions/PrepareFightScene";
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const { player1Image, player2Image, fightBgImage } = await LoadAssets();
+  const { player1Image, player2Image } = await LoadAssets();
   player1.addSpriteSheet(player1Image);
   player2.addSpriteSheet(player2Image);
-  fightBackground.image = fightBgImage;
   await PrepareTitleScene();
   PrepareFightScene();
   titleScene.show();

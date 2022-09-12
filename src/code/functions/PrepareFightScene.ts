@@ -5,7 +5,6 @@ import {
   player2,
 } from "../data/Instances";
 import { TopPanel } from "../modules/TopPanel/TopPanel";
-import { BottomPanel } from "../modules/BottomPanel/BottomPanel";
 import { AnnouncerText } from "../modules/AnnouncerText/AnnouncerText";
 import { WinScreen } from "../modules/WinScreen/WinScreen";
 import { GameConfig } from "../data/GameConfig";
@@ -19,7 +18,6 @@ export default function PrepareFightScene() {
     player1,
     player2,
     TopPanel,
-    BottomPanel,
     AnnouncerText,
     WinScreen,
   ]);
