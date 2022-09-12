@@ -9,13 +9,22 @@ export default defineConfig({
   plugins: [
     kontra({
       gameObject: {
+        acceleration: true,
+        anchor: true,
         group: true,
+        opacity: true,
+        rotation: true,
+        scale: true,
         ttl: true,
         velocity: true,
       },
       sprite: {
         animation: true,
         image: true,
+      },
+      vector: {
+        length: true,
+        scale: true,
       },
     }),
     compress({ brotli: false }),
