@@ -12,9 +12,11 @@ In a battle known as The Tournament of Destiny, they fight...
 
 ## About the game
 
-This 2D fighting game is based on fighting games fundamentals known as _footsies_ or _neutral game_. Due to the size limit, the scope of the game is very limited: you only have one attack and a parry. The goal is to keep your opponent at bay and to avoid getting hit. The game is played in rounds, and the first player to win 2 rounds wins the match.
+This 2D fighting game is based on fighting game fundamentals known as _footsies_ or _neutral game_. I wanted to recreate some of the handled fighting games of old, like Street Fighter on the Game Boy or the SNK titles for Neo Geo Pocket!
 
-Will you bait your opponents attack and parry it? Or will you try to get in close and land a hit? The choice is yours!
+Due to the size limit, the game's scope is minimal: you only have one attack and a parry. The goal is to keep your opponent at bay and to avoid getting hit. The game is played in rounds, and the first player to win two rounds wins the match.
+
+Will you bait your opponent's attack and parry it? Or will you try to get in close and land a hit? The choice is yours!
 
 ## How to play
 
@@ -24,28 +26,28 @@ The game only has local multiplayer. You can play with a friend on the same comp
 
 ### Player 1
 
-| Key        | Action |
-| ---------- | ------ |
-| Move left  | S      |
-| Move right | D      |
-| Attack     | X      |
-| Parry      | C      |
+| Action     | Key |
+| ---------- | --- |
+| Move left  | S   |
+| Move right | D   |
+| Attack     | X   |
+| Parry      | C   |
 
 ### Player 2
 
-| Key        | Action |
-| ---------- | ------ |
-| Move left  | H      |
-| Move right | J      |
-| Attack     | B      |
-| Parry      | N      |
+| Action     | Key |
+| ---------- | --- |
+| Move left  | H   |
+| Move right | J   |
+| Attack     | B   |
+| Parry      | N   |
 
 ### General
 
-| Key | Action                         |
-| --- | ------------------------------ |
-| T   | Show hitboxes during play      |
-| X   | Start the game and menu select |
+| Action                         | Key |
+| ------------------------------ | --- |
+| Show hitboxes during play      | T   |
+| Start the game and menu select | X   |
 
 ## How to build from source
 
