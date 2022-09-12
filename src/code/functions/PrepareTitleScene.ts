@@ -81,7 +81,7 @@ export default async function PrepareTitleScene() {
       pressKeyLabel = "";
       pressKeyFlash++;
     } else if (pressKeyFlash >= 61 && pressKeyFlash <= 120) {
-      pressKeyLabel = "PRESS K TO START";
+      pressKeyLabel = "PRESS X TO START";
       pressKeyFlash++;
     } else {
       pressKeyFlash = 0;

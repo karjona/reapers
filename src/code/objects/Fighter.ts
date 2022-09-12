@@ -121,8 +121,8 @@ export default class Fighter {
   private handleMovement() {
     if (this.position === Position.Left) {
       if (this.canMove) {
-        this.movingRight = ["arrowright"].some(keyPressed);
-        this.movingLeft = ["arrowleft"].some(keyPressed);
+        this.movingRight = ["d"].some(keyPressed);
+        this.movingLeft = ["s"].some(keyPressed);
       } else {
         this.movingRight = false;
         this.movingLeft = false;
@@ -139,8 +139,8 @@ export default class Fighter {
 
     if (this.position === Position.Right) {
       if (this.canMove) {
-        this.movingRight = ["g"].some(keyPressed);
-        this.movingLeft = ["d"].some(keyPressed);
+        this.movingRight = ["j"].some(keyPressed);
+        this.movingLeft = ["h"].some(keyPressed);
       } else {
         this.movingLeft = false;
         this.movingRight = false;
