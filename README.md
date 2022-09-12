@@ -20,28 +20,28 @@ Will you bait your opponents attack and parry it? Or will you try to get in clos
 
 ### Player 1
 
-| Key        | Action      |
-| ---------- | ----------- |
-| Move left  | Left arrow  |
-| Move right | Right arrow |
-| Attack     | K           |
-| Parry      | L           |
+| Key        | Action |
+| ---------- | ------ |
+| Move left  | S      |
+| Move right | D      |
+| Attack     | X      |
+| Parry      | C      |
 
 ### Player 2
 
 | Key        | Action |
 | ---------- | ------ |
-| Move left  | D      |
-| Move right | G      |
-| Attack     | Y      |
-| Parry      | U      |
+| Move left  | H      |
+| Move right | J      |
+| Attack     | B      |
+| Parry      | N      |
 
 ### General
 
 | Key | Action                         |
 | --- | ------------------------------ |
 | T   | Show hitboxes during play      |
-| K   | Start the game and menu select |
+| X   | Start the game and menu select |
 
 ## How to build from source
 

@@ -165,14 +165,14 @@ export default class Fighter {
       this.parryFrames === 0
     ) {
       if (this.position === Position.Left) {
-        onKey("l", () => {
+        onKey("c", () => {
           this.stop();
           this.parry();
         });
       }
 
       if (this.position === Position.Right) {
-        onKey("u", () => {
+        onKey("n", () => {
           this.stop();
           this.parry();
         });
@@ -200,14 +200,14 @@ export default class Fighter {
       this.parryFrames === 0
     ) {
       if (this.position === Position.Left) {
-        onKey("k", () => {
+        onKey("x", () => {
           this.stop();
           this.attack(Jab);
         });
       }
 
       if (this.position === Position.Right) {
-        onKey("y", () => {
+        onKey("b", () => {
           this.stop();
           this.attack(Jab);
         });

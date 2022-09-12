@@ -104,8 +104,8 @@ export default async function PrepareTitleScene() {
       fightSceneDelay = 0;
     }
 
-    onKey("k", () => {
-      offKey("k");
+    onKey("x", () => {
+      offKey("x");
       PlaySfx(menuSfx);
       fightSceneDelay++;
     });

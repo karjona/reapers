@@ -244,19 +244,19 @@ export const RematchScreen = GameObject({
     }
   },
   update: (dt) => {
-    onKey("arrowright", () => {
+    onKey("d", () => {
       if (cursorCanMove) {
         moveCursor();
       }
     });
 
-    onKey("arrowleft", () => {
+    onKey("s", () => {
       if (cursorCanMove) {
         moveCursor();
       }
     });
 
-    onKey("k", () => {
+    onKey("x", () => {
       if (cursorCanMove) {
         if (dt !== undefined) {
           PlaySfx(menuSfx);
