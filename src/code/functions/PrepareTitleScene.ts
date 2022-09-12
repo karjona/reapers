@@ -5,7 +5,6 @@ import { GameConfig } from "../data/GameConfig";
 import { fightScene, titleScene, renderText } from "../data/Instances";
 import { Scene } from "../types/Scene";
 import ResetFight from "./ResetFight";
-import logo from "/src/images/background/reapers.webp";
 
 let pressKeyFlash = 0;
 let pressKeyLabel = "";
@@ -21,14 +20,6 @@ export default async function PrepareTitleScene() {
       this.context.fillStyle = "black";
       this.context.fillRect(this.x, this.y, this.width, this.height);
     },
-  });
-
-  const titleSprite = Sprite({
-    x: 3,
-    y: 5,
-    width: 154,
-    height: 75,
-    image: await loadImage(logo),
   });
 
   const destinyText = GameObject({
@@ -60,7 +51,6 @@ export default async function PrepareTitleScene() {
 
   titleScene.add([
     titleSceneBackground,
-    titleSprite,
     destinyText,
     reapersText,
     pressKeyText,
