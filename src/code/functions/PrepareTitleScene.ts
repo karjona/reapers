@@ -11,17 +11,6 @@ let pressKeyLabel = "";
 let fightSceneDelay = 0;
 
 export default async function PrepareTitleScene() {
-  const titleSceneBackground = GameObject({
-    x: 0,
-    y: 0,
-    width: 160,
-    height: 152,
-    render: function (this: GameObject) {
-      this.context.fillStyle = "black";
-      this.context.fillRect(this.x, this.y, this.width, this.height);
-    },
-  });
-
   const destinyText = GameObject({
     x: 18,
     y: 84,
@@ -49,12 +38,7 @@ export default async function PrepareTitleScene() {
     },
   });
 
-  titleScene.add([
-    titleSceneBackground,
-    destinyText,
-    reapersText,
-    pressKeyText,
-  ]);
+  titleScene.add([destinyText, reapersText, pressKeyText]);
 
   titleScene.update = function () {
     titleScene.objects.forEach((object) => {
