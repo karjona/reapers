@@ -1,4 +1,4 @@
-import { init, initKeys, getContext, Scene, GameObject } from "kontra";
+import { init, initKeys, getContext, Scene, Sprite } from "kontra";
 import { initFont, font } from "tinyfont";
 import Fighter, { Position } from "../objects/Fighter";
 
@@ -10,19 +10,9 @@ export const renderText = initFont(font, getContext());
 export const player1 = new Fighter(Position.Left);
 export const player2 = new Fighter(Position.Right);
 
-export const fightBackground = GameObject({
+export const fightBackground = Sprite({
   x: 0,
-  y: 0,
-  width: 160,
-  height: 132,
-  render: function (this: GameObject) {
-    const context = getContext();
-    const gradient = context.createLinearGradient(0, 0, 0, 132);
-    gradient.addColorStop(0, "dimgray");
-    gradient.addColorStop(1, "darkgray");
-    context.fillStyle = gradient;
-    context.fillRect(this.x, this.y, this.width, this.height);
-  },
+  y: 33,
 });
 
 export const fightScene = Scene({
