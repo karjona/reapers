@@ -1,6 +1,6 @@
 {
   "name": "reapers",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The Reapers: Tournament of Destiny is a JS fighting game for the js13kGames 2022 competition",
   "keywords": [
     "game",
@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "bestzip": "^2.2.1",
-    "colors": "^1.4.0",
     "cross-exec-file": "^2.0.0",
     "ect-bin": "^1.4.1",
     "rollup-plugin-kontra": "^1.0.1",
