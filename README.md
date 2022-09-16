@@ -4,6 +4,8 @@ Reapers is a fighting game made in TypeScript for the [js13kGames 2022](https://
 
 Go to [karjona.github.io/reapers/](https://karjona.github.io/reapers/) to play the game!
 
+If you want to play the game with additional assets that couldn't fit in the 13KB limit, go to [itch.io](https://karjona.itch.io/reapers)!
+
 ## Backstory
 
 On the green fields near Mount Serrat, two otherworldly entities, Omiquiel, the devourer of souls, and Nomiquiel, the bestower of breath, come together once every thousand years to fight for the dominion of the living realms.
